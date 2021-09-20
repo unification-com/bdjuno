@@ -11,13 +11,8 @@ func StoreEmoneyInflationFromMessage(
 ) error {
 	inflation := types.NewEmoneyInflation(msg.Issuer, msg.Denom, msg.InflationRate, height)
 
-	//save both in emoney_inflation table and in mint table
-	err := db.SaveInflation(msg.InflationRate, height)
-	if err != nil {
-		return err
-	}
-
-	err = db.SaveEmoneyInflation(inflation)
+	//save  in emoney_inflation table and in mint table
+	err := db.SaveInflation(inflation.Rate, inflation.Height)
 	if err != nil {
 		return err
 	}

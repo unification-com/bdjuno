@@ -19,8 +19,8 @@ import (
 func RegisterPeriodicOps(scheduler *gocron.Scheduler, minClient minttypes.QueryClient, db *database.Db) error {
 	log.Debug().Str("module", "issuer").Msg("setting up periodic tasks")
 
-	// Setup a cron job to run every midnight
-	if _, err := scheduler.Every(1).Day().At("00:00").StartImmediately().Do(func() {
+	// Setup a cron job to run every 6 hours
+	if _, err := scheduler.Every(6).Hours().At("00:00").StartImmediately().Do(func() {
 		utils.WatchMethod(func() error { return updateInflation(minClient, db) })
 	}); err != nil {
 		return err
