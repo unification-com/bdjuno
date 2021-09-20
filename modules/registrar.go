@@ -16,6 +16,7 @@ import (
 	jmodules "github.com/desmos-labs/juno/modules"
 	"github.com/desmos-labs/juno/modules/messages"
 	"github.com/desmos-labs/juno/modules/registrar"
+	inflationtypes "github.com/forbole/bdjuno/modules/inflation/types"
 
 	"github.com/forbole/bdjuno/types/config"
 
@@ -29,6 +30,7 @@ import (
 	"github.com/forbole/bdjuno/modules/consensus"
 	"github.com/forbole/bdjuno/modules/distribution"
 	"github.com/forbole/bdjuno/modules/gov"
+	"github.com/forbole/bdjuno/modules/inflation"
 	"github.com/forbole/bdjuno/modules/issuer"
 	"github.com/forbole/bdjuno/modules/mint"
 	"github.com/forbole/bdjuno/modules/modules"
@@ -88,6 +90,7 @@ func (r *Registrar) BuildModules(ctx registrar.Context) jmodules.Modules {
 	mintClient := minttypes.NewQueryClient(grpcConnection)
 	slashingClient := slashingtypes.NewQueryClient(grpcConnection)
 	stakingClient := stakingtypes.NewQueryClient(grpcConnection)
+	inflationClient := inflationtypes.NewQueryClient(grpcConnection)
 
 	//e-money issuer module for obtaining inflation data
 	issuerClient := issuertypes.NewQueryClient(grpcConnection)
@@ -106,5 +109,6 @@ func (r *Registrar) BuildModules(ctx registrar.Context) jmodules.Modules {
 		staking.NewModule(ctx.ParsingConfig, bankClient, stakingClient, distrClient, encodingConfig, bigDipperBd),
 		history.NewModule(r.parser, encodingConfig, bigDipperBd),
 		issuer.NewModule(issuerClient, mintClient, bigDipperBd),
+		inflation.NewModule(ctx.ParsingConfig, bankClient, stakingClient, distrClient, encodingConfig, bigDipperBd, inflationClient),
 	}
 }
