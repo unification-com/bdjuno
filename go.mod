@@ -3,22 +3,31 @@ module github.com/forbole/bdjuno/v2
 go 1.16
 
 require (
-	github.com/cosmos/cosmos-sdk v0.44.0
+	github.com/CosmWasm/wasmvm v0.16.1 // indirect
+	github.com/cosmos/cosmos-sdk v0.44.1
+	github.com/cosmos/ibc-go v1.2.1 // indirect
 	github.com/desmos-labs/juno/v2 v2.0.0-20211005132135-bddec19d946f
 	github.com/go-co-op/gocron v0.3.3
 	github.com/gogo/protobuf v1.3.3
 	github.com/jmoiron/sqlx v1.2.1-0.20200324155115-ee514944af4b
-	github.com/lib/pq v1.9.0
+	github.com/lib/pq v1.10.2
 	github.com/pelletier/go-toml v1.9.3
 	github.com/proullon/ramsql v0.0.0-20181213202341-817cee58a244
 	github.com/rs/zerolog v1.23.0
-	github.com/spf13/cobra v1.1.3
+	github.com/spf13/cast v1.4.1 // indirect
+	github.com/spf13/cobra v1.2.1
 	github.com/stretchr/testify v1.7.0
 	github.com/tendermint/tendermint v0.34.13
+	github.com/tendermint/tm-db v0.6.5 // indirect
 	github.com/terra-money/core v0.5.2
-	google.golang.org/grpc v1.38.0
+	google.golang.org/genproto v0.0.0-20211008145708-270636b82663 // indirect
+	google.golang.org/grpc v1.40.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
+
+replace github.com/99designs/keyring => github.com/cosmos/keyring v1.1.7-0.20210622111912-ef00f8ac3d76
+
+replace github.com/cosmos/ledger-cosmos-go => github.com/terra-money/ledger-terra-go v0.11.2
 
 replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alpha.regen.1
 
