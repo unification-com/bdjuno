@@ -58,7 +58,7 @@ func queryKeyBase(endpoint string, ptr interface{}) error {
 
 	err = json.Unmarshal(bz, &ptr)
 	if err != nil {
-		return fmt.Errorf("error while unmarshaling response body: %s", err)
+		return fmt.Errorf("error while unmarshaling response body %v   ERROR: %s", resp, err)
 	}
 
 	return nil
