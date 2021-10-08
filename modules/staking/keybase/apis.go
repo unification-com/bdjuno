@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 // GetAvatarURL returns the avatar URL from the given identity.
@@ -36,6 +37,8 @@ func GetAvatarURL(identity string) (string, error) {
 	if data.Pictures == nil || data.Pictures.Primary == nil || len(data.Pictures.Primary.URL) == 0 {
 		return "", nil
 	}
+
+	time.Sleep(time.Second)
 
 	// The picture URL is found
 	return data.Pictures.Primary.URL, nil
