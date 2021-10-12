@@ -5,20 +5,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"time"
 )
 
 // GetAvatarURL returns the avatar URL from the given identity.
 // If no identity is found, it returns an empty string instead.
-func GetAvatarURL(identity string, counter int) (string, error) {
+func GetAvatarURL(identity string) (string, error) {
 	if len(identity) < 16 {
 		return "", nil
 	}
 
-	// Process 50 validators in a minute
-	if counter > 50 {
-		time.Sleep(time.Minute)
-	}
 	var response IdentityQueryResponse
 	endpoint := fmt.Sprintf("/user/lookup.json?key_suffix=%[1]s&fields=basics&fields=pictures", identity)
 	err := queryKeyBase(endpoint, &response)
