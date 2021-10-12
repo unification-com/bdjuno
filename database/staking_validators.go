@@ -484,17 +484,19 @@ func (db *Db) ValidatorDescriptionIsStored(address string) (bool, error) {
 
 	consAddr, err := db.GetValidatorConsensusAddress(address)
 	if err != nil {
+		return false, fmt.Errorf("error while getting validator %s cons address, error : %s", consAddr, err)
+	}
+
+	var result []string
+	stmt := `SELECT * FROM validator_description WHERE validator_address = $1`
+	err = db.Sqlx.Select(&result, stmt, consAddr)
+	if err != nil {
 		return false, err
 	}
 
-	stmt := `SELECT COUNT(*) FROM validator_description WHERE validator_address = $1`
-
-	var count int
-	err = db.Sql.QueryRow(stmt, consAddr).Scan(&count)
-	if err != nil {
-		return false, fmt.Errorf("error while checking validator %s description : %s", consAddr, err)
-
+	if len(result) == 0 {
+		return false, fmt.Errorf("cannot find the description details in db for validator %s", consAddr)
 	}
 
-	return count > 0, nil
+	return len(result) > 0, nil
 }
