@@ -478,3 +478,23 @@ VALUES ($1, $2, $3) ON CONFLICT DO NOTHING`
 
 	return nil
 }
+
+// ValidatorDescriptionIsStored checks if the database contains description for given validator
+func (db *Db) ValidatorDescriptionIsStored(address string) (bool, error) {
+
+	consAddr, err := db.GetValidatorConsensusAddress(address)
+	if err != nil {
+		return false, err
+	}
+
+	stmt := `SELECT COUNT(*) FROM validator_description WHERE validator_address = $1`
+
+	var count int
+	err = db.Sql.QueryRow(stmt).Scan(&count, consAddr)
+	if err != nil {
+		return false, fmt.Errorf("error while checking validator %s description : %s", consAddr, err)
+
+	}
+
+	return count > 0, nil
+}
