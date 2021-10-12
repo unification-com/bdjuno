@@ -490,7 +490,7 @@ func (db *Db) ValidatorDescriptionIsStored(address string) (bool, error) {
 	stmt := `SELECT COUNT(*) FROM validator_description WHERE validator_address = $1`
 
 	var count int
-	err = db.Sql.QueryRow(stmt).Scan(&count, consAddr)
+	err = db.Sql.QueryRow(stmt, consAddr).Scan(&count)
 	if err != nil {
 		return false, fmt.Errorf("error while checking validator %s description : %s", consAddr, err)
 
