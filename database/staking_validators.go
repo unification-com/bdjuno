@@ -487,11 +487,11 @@ func (db *Db) ValidatorDescriptionIsStored(address string) (bool, error) {
 		return false, fmt.Errorf("error while getting validator %s cons address, error : %s", consAddr, err)
 	}
 
-	var result []string
+	var result []interface{}
 	stmt := `SELECT * FROM validator_description WHERE validator_address = $1`
 	err = db.Sqlx.Select(&result, stmt, consAddr)
 	if err != nil {
-		return false, err
+		return false, fmt.Errorf("error while checking validator %s description in db, error: %s", consAddr, err)
 	}
 
 	if len(result) == 0 {
