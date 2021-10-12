@@ -92,7 +92,7 @@ func (m *Module) refreshValidatorInfos(height int64, valOper string) error {
 		return fmt.Errorf("error while converting validator: %s", err)
 	}
 
-	desc, err := m.convertValidatorDescription(height, stakingValidator.OperatorAddress, stakingValidator.Description, 0)
+	desc, err := m.convertValidatorDescription(height, stakingValidator.OperatorAddress, stakingValidator.Description)
 	if err != nil {
 		return fmt.Errorf("error while converting validator description: %s", err)
 	}
