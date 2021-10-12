@@ -61,14 +61,14 @@ func (m *Module) convertValidator(height int64, validator stakingtypes.Validator
 // convertValidatorDescription returns a new types.ValidatorDescription object by fetching the avatar URL
 // using the Keybase APIs
 func (m *Module) convertValidatorDescription(
-	height int64, opAddr string, description stakingtypes.Description,
+	height int64, opAddr string, description stakingtypes.Description, counter int,
 ) (types.ValidatorDescription, error) {
 	var avatarURL string
 
 	if description.Identity == stakingtypes.DoNotModifyDesc {
 		avatarURL = stakingtypes.DoNotModifyDesc
 	} else {
-		url, err := keybase.GetAvatarURL(description.Identity)
+		url, err := keybase.GetAvatarURL(description.Identity, counter)
 		if err != nil {
 			return types.ValidatorDescription{}, err
 		}
@@ -92,7 +92,7 @@ func (m *Module) refreshValidatorInfos(height int64, valOper string) error {
 		return fmt.Errorf("error while converting validator: %s", err)
 	}
 
-	desc, err := m.convertValidatorDescription(height, stakingValidator.OperatorAddress, stakingValidator.Description)
+	desc, err := m.convertValidatorDescription(height, stakingValidator.OperatorAddress, stakingValidator.Description, 0)
 	if err != nil {
 		return fmt.Errorf("error while converting validator description: %s", err)
 	}
