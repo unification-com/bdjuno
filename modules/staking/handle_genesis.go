@@ -134,22 +134,38 @@ func (m *Module) saveValidators(doc *tmtypes.GenesisDoc, validators stakingtypes
 	return m.db.SaveValidatorsData(vals)
 }
 
+// shouldSaveValidatorDescription checks if validator description should be saved into db or skipped
+func (m *Module) shouldSaveValidatorDescription(address string) bool {
+
+	skipSavingDescription, err := m.db.ValidatorDescriptionIsStored(address)
+	if err != nil {
+		log.Error().Str("module", "distribution").Err(err).
+			Msg("error while checking validator description address")
+		return false
+	}
+
+	return !skipSavingDescription
+}
+
 // saveValidatorDescription saves the description for the given validators
 func (m *Module) saveValidatorDescription(doc *tmtypes.GenesisDoc, validators stakingtypes.Validators) error {
 	for _, account := range validators {
-		description, err := m.convertValidatorDescription(
-			doc.InitialHeight,
-			account.OperatorAddress,
-			account.Description,
-		)
-		if err != nil {
-			return fmt.Errorf("error while converting validator description: %s", err)
+		if m.shouldSaveValidatorDescription(account.OperatorAddress) {
+			description, err := m.convertValidatorDescription(
+				doc.InitialHeight,
+				account.OperatorAddress,
+				account.Description,
+			)
+			if err != nil {
+				return fmt.Errorf("error while converting validator description: %s", err)
+			}
+
+			err = m.db.SaveValidatorDescription(description)
+			if err != nil {
+				return err
+			}
 		}
 
-		err = m.db.SaveValidatorDescription(description)
-		if err != nil {
-			return err
-		}
 	}
 
 	return nil

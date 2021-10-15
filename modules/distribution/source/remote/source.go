@@ -1,6 +1,8 @@
 package remote
 
 import (
+	"fmt"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	"github.com/desmos-labs/juno/v2/node/remote"
@@ -42,13 +44,13 @@ func (s Source) ValidatorCommission(valOperAddr string, height int64) (sdk.DecCo
 
 // DelegatorTotalRewards implements distrsource.Source
 func (s Source) DelegatorTotalRewards(delegator string, height int64) ([]distrtypes.DelegationDelegatorReward, error) {
-	res, err := s.distrClient.DelegationTotalRewards(
+res, err := s.distrClient.DelegationTotalRewards(
 		s.Ctx,
 		&distrtypes.QueryDelegationTotalRewardsRequest{DelegatorAddress: delegator},
 		remote.GetHeightRequestHeader(height),
 	)
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("error while getting DelegationTotalRewards for for delegaotr %s  height %v: %s", delegator, height, err)
 	}
 
 	return res.Rewards, nil
