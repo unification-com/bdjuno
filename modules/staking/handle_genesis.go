@@ -150,20 +150,15 @@ func (m *Module) shouldSaveValidatorDescription(address string) bool {
 // saveValidatorDescription saves the description for the given validators
 func (m *Module) saveValidatorDescription(doc *tmtypes.GenesisDoc, validators stakingtypes.Validators) error {
 	for _, account := range validators {
-		if m.shouldSaveValidatorDescription(account.OperatorAddress) {
-			description, err := m.convertValidatorDescription(
-				doc.InitialHeight,
-				account.OperatorAddress,
-				account.Description,
-			)
-			if err != nil {
-				return fmt.Errorf("error while converting validator description: %s", err)
-			}
+		description := m.convertValidatorDescription(
+			doc.InitialHeight,
+			account.OperatorAddress,
+			account.Description,
+		)
 
-			err = m.db.SaveValidatorDescription(description)
-			if err != nil {
-				return err
-			}
+		err := m.db.SaveValidatorDescription(description)
+		if err != nil {
+			return err
 		}
 
 	}
