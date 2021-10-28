@@ -66,6 +66,10 @@ func refreshProposalDetails(parseCtx *parse.Context, proposalID string, govModul
 		return err
 	}
 
+	if len(txs) == 0 {
+		return fmt.Errorf("no proposal found with id %s", proposalID)
+	}
+
 	if len(txs) > 1 {
 		return fmt.Errorf("expecting only one create proposal transaction, found %d", len(txs))
 	}
