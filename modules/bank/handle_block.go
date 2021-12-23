@@ -1,6 +1,8 @@
 package bank
 
 import (
+	"fmt"
+
 	"github.com/forbole/juno/v2/types"
 
 	"github.com/rs/zerolog/log"
@@ -27,7 +29,7 @@ func (m *Module) updateSupply(height int64) error {
 
 	supply, err := m.keeper.GetSupply(height)
 	if err != nil {
-		return fmt.Printf("error while getting the supply from the keeper %s", err)
+		return fmt.Errorf("error while getting the supply from the keeper %s", err)
 	}
 
 	return m.db.SaveSupply(supply, height)
