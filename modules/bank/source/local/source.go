@@ -59,6 +59,7 @@ func (s Source) GetSupply(height int64) (sdk.Coins, error) {
 
 	res, err := s.q.TotalSupply(sdk.WrapSDKContext(ctx), &banktypes.QueryTotalSupplyRequest{})
 	if err != nil {
+		return nil, fmt.Errorf("error while getting total supply %s", err)
 		return nil, err
 	}
 
