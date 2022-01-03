@@ -21,6 +21,7 @@ func (m *Module) StoreValidatorsFromMsgCreateValidator(height int64, msg *stakin
 	}
 	avatarURL, err := keybase.GetAvatarURL(msg.Description.Identity)
 	if err != nil {
+		fmt.Errorf("ERROR descrption %v", msg.Description)
 		return fmt.Errorf("error while getting Avatar URL: %s", err)
 	}
 
