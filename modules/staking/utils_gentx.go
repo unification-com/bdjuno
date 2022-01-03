@@ -20,14 +20,13 @@ func (m *Module) StoreValidatorsFromMsgCreateValidator(height int64, msg *stakin
 	if err != nil {
 		return fmt.Errorf("error while unpacking pub key: %s", err)
 	}
-	if len(msg.Description.Identity) == 0 {
+	if len(msg.Description.Identity) == 0 || len(msg.Description.Identity) > 16 {
 		avatarURL = ""
 	}
-	if len(msg.Description.Identity) > 0 {
+	if len(msg.Description.Identity) == 16 {
 		fmt.Printf("IDENTITY: %s", msg.Description.Identity)
 		avatarURL, err = keybase.GetAvatarURL(msg.Description.Identity)
 		if err != nil {
-			fmt.Errorf("ERROR descrption %v", msg.Description)
 			return fmt.Errorf("error while getting Avatar URL: %s", err)
 		}
 	}
