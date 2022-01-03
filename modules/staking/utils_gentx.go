@@ -15,14 +15,20 @@ import (
 // saving into the database all the data associated to such validator
 func (m *Module) StoreValidatorsFromMsgCreateValidator(height int64, msg *stakingtypes.MsgCreateValidator) error {
 	var pubKey cryptotypes.PubKey
+	var avatarURL string
 	err := m.cdc.UnpackAny(msg.Pubkey, &pubKey)
 	if err != nil {
 		return fmt.Errorf("error while unpacking pub key: %s", err)
 	}
-	avatarURL, err := keybase.GetAvatarURL(msg.Description.Identity)
-	if err != nil {
-		fmt.Errorf("ERROR descrption %v", msg.Description)
-		return fmt.Errorf("error while getting Avatar URL: %s", err)
+	if len(msg.Description.Identity) == 0 {
+		avatarURL = ""
+	}
+	if len(msg.Description.Identity) > 0 {
+		avatarURL, err = keybase.GetAvatarURL(msg.Description.Identity)
+		if err != nil {
+			fmt.Errorf("ERROR descrption %v", msg.Description)
+			return fmt.Errorf("error while getting Avatar URL: %s", err)
+		}
 	}
 
 	// Save the validators
