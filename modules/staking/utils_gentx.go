@@ -24,7 +24,6 @@ func (m *Module) StoreValidatorsFromMsgCreateValidator(height int64, msg *stakin
 		avatarURL = ""
 	}
 	if len(msg.Description.Identity) == 16 {
-		fmt.Printf("IDENTITY: %s", msg.Description.Identity)
 		avatarURL, err = keybase.GetAvatarURL(msg.Description.Identity)
 		if err != nil {
 			return fmt.Errorf("error while getting Avatar URL: %s", err)
