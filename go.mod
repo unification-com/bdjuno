@@ -27,7 +27,7 @@ replace github.com/tendermint/tendermint => github.com/forbole/tendermint v0.34.
 
 replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.2-alpha.regen.4
 
-replace github.com/cosmos/cosmos-sdk => github.com/MonikaCat/cosmos-sdk v0.44.3-0.20220105152650-0382d5adb2c4
+replace github.com/cosmos/cosmos-sdk => github.com/MonikaCat/cosmos-sdk v0.44.3-0.20220105123951-04a05c6f43c8
 
 replace github.com/regen-network/regen-ledger/x/data => github.com/regen-network/regen-ledger/x/data v0.0.0-20210602121340-fa967f821a6e
 
