@@ -25,7 +25,10 @@ func blocksCmd(parseConfig *parse.Config) *cobra.Command {
 			worker := parser.NewWorker(0, workerCtx)
 
 			// Get latest height
-			var height int64 = 2902675
+			height, err := parseCtx.Node.LatestHeight()
+			if err != nil {
+				return fmt.Errorf("error while getting chain latest block height: %s", err)
+			}
 
 			k := config.Cfg.Parser.StartHeight
 			fmt.Printf("Refetching missing blocks and transactions from height %d ... \n", k)
