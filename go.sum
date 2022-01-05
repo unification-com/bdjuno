@@ -86,8 +86,8 @@ github.com/Masterminds/semver v1.4.2/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF0
 github.com/Masterminds/semver v1.5.0/go.mod h1:MB6lktGJrhw8PrUyiEoblNEGEQ+RzHPF078ddwwvV3Y=
 github.com/Masterminds/sprig v2.15.0+incompatible/go.mod h1:y6hNFY5UBTIWBxnzTeuNhlNS5hqE0NB0E6fgfo2Br3o=
 github.com/Masterminds/sprig v2.22.0+incompatible/go.mod h1:y6hNFY5UBTIWBxnzTeuNhlNS5hqE0NB0E6fgfo2Br3o=
-github.com/MonikaCat/cosmos-sdk v0.44.3-0.20220105123951-04a05c6f43c8 h1:chkKBDRzQXR0W7V2+V6nbiH7mMw/UNJVozsuN75f5+w=
-github.com/MonikaCat/cosmos-sdk v0.44.3-0.20220105123951-04a05c6f43c8/go.mod h1:fwQJdw+aECatpTvQTo1tSfHEsxACdZYU80QCZUPnHr4=
+github.com/MonikaCat/cosmos-sdk v0.44.3-0.20220105152650-0382d5adb2c4 h1:BlJgWSCNsC9ruIzQrosGn8ch8bD6gzrKtvrLt5akcEM=
+github.com/MonikaCat/cosmos-sdk v0.44.3-0.20220105152650-0382d5adb2c4/go.mod h1:fwQJdw+aECatpTvQTo1tSfHEsxACdZYU80QCZUPnHr4=
 github.com/MonikaCat/regen-ledger/v2 v2.0.0-beta1.0.20211215114204-13ca322dd73c h1:KWK5i+e7DaVt73e2aSGKuCiP5jgSvL2VldVLpPPvL6Q=
 github.com/MonikaCat/regen-ledger/v2 v2.0.0-beta1.0.20211215114204-13ca322dd73c/go.mod h1:UZUgB/BKIR6Zf0zmbKxKxMB4twwWt07gvZr/fVEEYos=
 github.com/OneOfOne/xxhash v1.2.2 h1:KMrpdQIwFcEqXDklaen+P1axHaj9BSKzvpUUfnHldSE=
