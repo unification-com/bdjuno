@@ -32,7 +32,7 @@ func slashesCmd(parseConfig *parse.Config) *cobra.Command {
 			db := database.Cast(parseCtx.Database)
 
 			// Get latest height
-			var height int64 = 3007601
+			var height int64 = 3008103
 			// Get all validators
 			validators, err := sources.StakingSource.GetValidatorsWithStatus(height, "")
 			if err != nil {
