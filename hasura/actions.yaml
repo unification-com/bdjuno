@@ -26,6 +26,21 @@ actions:
   permissions:
   - role: anonymous
 
+- name: delegator_rewards
+  definition:
+    kind: synchronous
+    handler: http://localhost:3000/delegator_rewards
+    output_type: DecCoins
+    arguments:
+    - name: Address
+      type: Address!
+    type: query
+    headers:
+    - value: application/json
+      name: Content-Type
+  permissions:
+  - role: anonymous
+
 custom_types:
   input_objects:
   - name: Address

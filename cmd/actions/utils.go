@@ -48,6 +48,31 @@ func getAccountBalances(address string) (response actionstypes.Coins, err error)
 	return response, nil
 }
 
+func getDelegatorRewards(address string) (response actionstypes.DecCoins, err error) {
+	parseCtx, sources, err := getCtxAndSources()
+	if err != nil {
+		return response, err
+	}
+
+	// Get latest node height
+	height, err := parseCtx.Node.LatestHeight()
+	if err != nil {
+		return response, fmt.Errorf("error while getting chain latest block height: %s", err)
+	}
+	rewards, err := sources.DistrSource.DelegatorTotalRewards(address, height)
+		if err != nil {
+		return response, err
+	}
+
+	for _, rew := range rewards {
+		response = actionstypes.DecCoins{
+			Coin: rew.Reward,
+		}
+	}
+
+	return response, nil
+}
+
 func getTotalSupply() (response actionstypes.Coins, err error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
