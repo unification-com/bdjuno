@@ -30,7 +30,22 @@ actions:
   definition:
     kind: synchronous
     handler: http://localhost:3000/delegator_rewards
-    output_type: DecCoins
+    output_type: Coins
+    arguments:
+    - name: Address
+      type: Address!
+    type: query
+    headers:
+    - value: application/json
+      name: Content-Type
+  permissions:
+  - role: anonymous
+
+- name: validator_commission
+  definition:
+    kind: synchronous
+    handler: http://localhost:3000/validator_commission
+    output_type: Coins
     arguments:
     - name: Address
       type: Address!

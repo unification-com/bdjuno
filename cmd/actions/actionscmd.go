@@ -21,6 +21,7 @@ func NewActionsCmd(parseCfg *parse.Config) *cobra.Command {
 			mux.HandleFunc("/account_balances", accountBalancesHandler)
 			mux.HandleFunc("/total_supply", totalSupplyHandler)
 			mux.HandleFunc("/delegator_rewards", delegatorRewardsHandler)
+			mux.HandleFunc("/validator_commission", validatorCommissionHandler)
 
 
 			err := http.ListenAndServe(":3000", mux)

@@ -72,3 +72,29 @@ func delegatorRewardsHandler(w http.ResponseWriter, r *http.Request) {
 	data, _ := json.Marshal(result)
 	w.Write(data)
 }
+
+func validatorCommissionHandler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Content-Type", "application/json")
+
+	reqBody, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		http.Error(w, "invalid payload", http.StatusBadRequest)
+		return
+	}
+
+	var actionPayload actionstypes.ValidatorCommissionPayload
+	err = json.Unmarshal(reqBody, &actionPayload)
+	if err != nil {
+		http.Error(w, "invalid payload: failed to unmarshal json", http.StatusInternalServerError)
+		return
+	}
+
+	result, err := getValidatorCommission(actionPayload.Input.Address.Address)
+	if err != nil {
+		graphQLError(w, err)
+		return
+	}
+
+	data, _ := json.Marshal(result)
+	w.Write(data)
+}

@@ -47,3 +47,13 @@ type DelegatorRewardsPayload struct {
 type Delegator_rewardsArgs struct {
 	Address Address
 }
+
+// ========================= Validator Commission  =========================
+type ValidatorCommissionPayload struct {
+	SessionVariables map[string]interface{} `json:"session_variables"`
+	Input            Validator_commissionArgs   `json:"input"`
+}
+
+type Validator_commissionArgs struct {
+	Address Address
+}

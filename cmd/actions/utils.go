@@ -73,6 +73,29 @@ func getDelegatorRewards(address string) (response actionstypes.DecCoins, err er
 	return response, nil
 }
 
+func getValidatorCommission(address string) (response actionstypes.DecCoins, err error) {
+	parseCtx, sources, err := getCtxAndSources()
+	if err != nil {
+		return response, err
+	}
+
+	// Get latest node height
+	height, err := parseCtx.Node.LatestHeight()
+	if err != nil {
+		return response, fmt.Errorf("error while getting chain latest block height: %s", err)
+	}
+	commission, err := sources.DistrSource.ValidatorCommission(address, height)
+		if err != nil {
+		return response, err
+	}
+
+	response = actionstypes.DecCoins{
+		Coin: commission,
+	}
+
+	return response, nil
+}
+
 func getTotalSupply() (response actionstypes.Coins, err error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
