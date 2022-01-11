@@ -6,14 +6,14 @@ type GraphQLError struct {
 	Message string `json:"message"`
 }
 
-// ========================= Account Balances =========================
+// ========================= Address Payload =========================
 type AddressPayload struct {
 	SessionVariables map[string]interface{} `json:"session_variables"`
 	Input            Address                `json:"input"`
 }
 
 type Address struct {
-	Address string
+	Address string `json:"address"`
 }
 
 // ========================= Coins =========================
@@ -23,4 +23,11 @@ type Coins struct {
 
 type DecCoins struct {
 	DecCoins []sdk.DecCoin `json:"dec_coins"`
+}
+
+// ========================= Delegator Rewards =========================
+
+type DelegatorRewards struct {
+	DecCoins   sdk.DecCoins `json:"dec_coins"`
+	ValAddress string       `json:"validator_address"`
 }

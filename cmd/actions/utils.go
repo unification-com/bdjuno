@@ -48,7 +48,7 @@ func getAccountBalances(address string) (response actionstypes.Coins, err error)
 	return response, nil
 }
 
-func getDelegatorRewards(address string) (response actionstypes.DecCoins, err error) {
+func getDelegatorRewards(address string) (response []actionstypes.DelegatorRewards, err error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
 		return response, err
@@ -64,15 +64,15 @@ func getDelegatorRewards(address string) (response actionstypes.DecCoins, err er
 		return response, err
 	}
 
-	var decCoins []sdk.DecCoin
-	for _, rew := range rewards {
-		decCoins = append(decCoins, rew.Reward...)
+	res := make([]actionstypes.DelegatorRewards, len(rewards))
+	for index, rew := range rewards {
+		res[index] = actionstypes.DelegatorRewards{
+			DecCoins:   rew.Reward,
+			ValAddress: rew.ValidatorAddress,
+		}
 	}
 
-	response = actionstypes.DecCoins{
-		DecCoins: decCoins,
-	}
-	return response, nil
+	return res, nil
 }
 
 func getValidatorCommission(address string) (response actionstypes.DecCoins, err error) {
