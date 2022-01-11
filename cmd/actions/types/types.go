@@ -18,9 +18,9 @@ type Address struct {
 
 // ========================= Coins =========================
 type Coins struct {
-	Coins []sdk.Coin
+	Coins []sdk.Coin `json:"coins"`
 }
 
 type DecCoins struct {
-	DecCoins []sdk.DecCoin
+	DecCoins []sdk.DecCoin `json:"dec_coins"`
 }
