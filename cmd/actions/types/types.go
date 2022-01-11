@@ -7,13 +7,9 @@ type GraphQLError struct {
 }
 
 // ========================= Account Balances =========================
-type AccountBalancesPayload struct {
+type AddressPayload struct {
 	SessionVariables map[string]interface{} `json:"session_variables"`
-	Input            Account_balancesArgs   `json:"input"`
-}
-
-type Account_balancesArgs struct {
-	Address Address
+	Input            Address                `json:"input"`
 }
 
 type Address struct {
@@ -26,34 +22,5 @@ type Coins struct {
 }
 
 type DecCoins struct {
-	Coin sdk.DecCoins
-}
-
-// ========================= Total Supply =========================
-type TotalSupplyPayload struct {
-	SessionVariables map[string]interface{} `json:"session_variables"`
-	Input            total_supplyArgs       `json:"input"`
-}
-
-type total_supplyArgs struct{}
-
-
-// ========================= Delegators Rewards =========================
-type DelegatorRewardsPayload struct {
-	SessionVariables map[string]interface{} `json:"session_variables"`
-	Input            Delegator_rewardsArgs   `json:"input"`
-}
-
-type Delegator_rewardsArgs struct {
-	Address Address
-}
-
-// ========================= Validator Commission  =========================
-type ValidatorCommissionPayload struct {
-	SessionVariables map[string]interface{} `json:"session_variables"`
-	Input            Validator_commissionArgs   `json:"input"`
-}
-
-type Validator_commissionArgs struct {
-	Address Address
+	DecCoins []sdk.DecCoin
 }

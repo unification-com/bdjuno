@@ -60,16 +60,18 @@ func getDelegatorRewards(address string) (response actionstypes.DecCoins, err er
 		return response, fmt.Errorf("error while getting chain latest block height: %s", err)
 	}
 	rewards, err := sources.DistrSource.DelegatorTotalRewards(address, height)
-		if err != nil {
+	if err != nil {
 		return response, err
 	}
 
+	var decCoins []sdk.DecCoin
 	for _, rew := range rewards {
-		response = actionstypes.DecCoins{
-			Coin: rew.Reward,
-		}
+		decCoins = append(decCoins, rew.Reward...)
 	}
 
+	response = actionstypes.DecCoins{
+		DecCoins: decCoins,
+	}
 	return response, nil
 }
 
@@ -85,12 +87,12 @@ func getValidatorCommission(address string) (response actionstypes.DecCoins, err
 		return response, fmt.Errorf("error while getting chain latest block height: %s", err)
 	}
 	commission, err := sources.DistrSource.ValidatorCommission(address, height)
-		if err != nil {
+	if err != nil {
 		return response, err
 	}
 
 	response = actionstypes.DecCoins{
-		Coin: commission,
+		DecCoins: commission,
 	}
 
 	return response, nil

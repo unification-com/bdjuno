@@ -17,14 +17,14 @@ func accountBalancesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var actionPayload actionstypes.AccountBalancesPayload
+	var actionPayload actionstypes.AddressPayload
 	err = json.Unmarshal(reqBody, &actionPayload)
 	if err != nil {
 		http.Error(w, "invalid payload: failed to unmarshal json", http.StatusInternalServerError)
 		return
 	}
 
-	result, err := getAccountBalances(actionPayload.Input.Address.Address)
+	result, err := getAccountBalances(actionPayload.Input.Address)
 	if err != nil {
 		graphQLError(w, err)
 		return
@@ -56,14 +56,14 @@ func delegatorRewardsHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var actionPayload actionstypes.DelegatorRewardsPayload
+	var actionPayload actionstypes.AddressPayload
 	err = json.Unmarshal(reqBody, &actionPayload)
 	if err != nil {
 		http.Error(w, "invalid payload: failed to unmarshal json", http.StatusInternalServerError)
 		return
 	}
 
-	result, err := getDelegatorRewards(actionPayload.Input.Address.Address)
+	result, err := getDelegatorRewards(actionPayload.Input.Address)
 	if err != nil {
 		graphQLError(w, err)
 		return
@@ -82,14 +82,14 @@ func validatorCommissionHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var actionPayload actionstypes.ValidatorCommissionPayload
+	var actionPayload actionstypes.AddressPayload
 	err = json.Unmarshal(reqBody, &actionPayload)
 	if err != nil {
 		http.Error(w, "invalid payload: failed to unmarshal json", http.StatusInternalServerError)
 		return
 	}
 
-	result, err := getValidatorCommission(actionPayload.Input.Address.Address)
+	result, err := getValidatorCommission(actionPayload.Input.Address)
 	if err != nil {
 		graphQLError(w, err)
 		return

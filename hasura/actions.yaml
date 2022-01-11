@@ -6,7 +6,7 @@ actions:
     output_type: Coins
     arguments:
     - name: Address
-      type: Address!
+      type: String!
     type: query
     headers:
     - value: application/json
@@ -33,7 +33,7 @@ actions:
     output_type: Coins
     arguments:
     - name: Address
-      type: Address!
+      type: String!
     type: query
     headers:
     - value: application/json
@@ -48,7 +48,7 @@ actions:
     output_type: Coins
     arguments:
     - name: Address
-      type: Address!
+      type: String!
     type: query
     headers:
     - value: application/json
