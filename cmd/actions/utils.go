@@ -17,10 +17,10 @@ import (
 	junoconfig "github.com/forbole/juno/v2/types/config"
 )
 
-func getAccountBalances(address string) (response actionstypes.Coins, err error) {
+func getAccountBalances(address string) ([]sdk.Coins, error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
-		return response, err
+		return []sdk.Coins{}, err
 	}
 
 	bankModule := bank.NewModule(nil, sources.BankSource, parseCtx.EncodingConfig.Marshaler, nil)
@@ -28,24 +28,21 @@ func getAccountBalances(address string) (response actionstypes.Coins, err error)
 	// Get latest height
 	height, err := parseCtx.Node.LatestHeight()
 	if err != nil {
-		return response, fmt.Errorf("error while getting chain latest block height: %s", err)
+		return []sdk.Coins{}, fmt.Errorf("error while getting chain latest block height: %s", err)
 	}
 
 	balances, err := bankModule.Keeper.GetBalances([]string{address}, height)
 	if err != nil {
-		return response, err
+		return []sdk.Coins{}, err
 	}
 
-	var coins []sdk.Coin
-	for _, bal := range balances {
-		coins = append(coins, bal.Balance...)
+	// var coins []sdk.Coin
+	coins := make([]sdk.Coins, len(balances))
+	for index, bal := range balances {
+		coins[index] = bal.Balance
 	}
 
-	response = actionstypes.Coins{
-		Coins: coins,
-	}
-
-	return response, nil
+	return coins, nil
 }
 
 func getDelegatorRewards(address string) (response []actionstypes.DelegatorRewards, err error) {
