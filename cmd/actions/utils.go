@@ -6,7 +6,6 @@ import (
 	"net/http"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/rs/zerolog/log"
 
 	actionstypes "github.com/forbole/bdjuno/v2/cmd/actions/types"
 	"github.com/forbole/bdjuno/v2/cmd/utils"
@@ -19,8 +18,6 @@ import (
 )
 
 func getAccountBalances(input actionstypes.AccountBalancesArgs) (actionstypes.Coins, error) {
-	log.Debug().Str("Handler", "Account balances").
-		Int64("height", input.Height)
 
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
@@ -56,7 +53,6 @@ func getAccountBalances(input actionstypes.AccountBalancesArgs) (actionstypes.Co
 }
 
 func getDelegatorRewards(address string) (response []actionstypes.DelegatorRewards, err error) {
-	log.Debug().Str("Handler", "Delegator rewards")
 
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
@@ -85,7 +81,6 @@ func getDelegatorRewards(address string) (response []actionstypes.DelegatorRewar
 }
 
 func getValidatorCommission(address string) (response actionstypes.DecCoins, err error) {
-	log.Debug().Str("Handler", "Validator commission")
 
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
@@ -108,7 +103,6 @@ func getValidatorCommission(address string) (response actionstypes.DecCoins, err
 }
 
 func getTotalSupply() (response actionstypes.Coins, err error) {
-	log.Debug().Str("Handler", "Total Supply")
 
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
