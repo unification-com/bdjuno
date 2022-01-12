@@ -17,14 +17,14 @@ func accountBalancesHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var actionPayload actionstypes.AddressPayload
+	var actionPayload actionstypes.AccountBalancesPayload
 	err = json.Unmarshal(reqBody, &actionPayload)
 	if err != nil {
 		http.Error(w, "invalid payload: failed to unmarshal json", http.StatusInternalServerError)
 		return
 	}
 
-	result, err := getAccountBalances(actionPayload.Input.Address)
+	result, err := getAccountBalances(actionPayload.Input)
 	if err != nil {
 		graphQLError(w, err)
 		return

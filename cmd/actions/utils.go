@@ -17,7 +17,7 @@ import (
 	junoconfig "github.com/forbole/juno/v2/types/config"
 )
 
-func getAccountBalances(address string) ([]sdk.Coins, error) {
+func getAccountBalances(input actionstypes.AccountBalancesArgs) ([]sdk.Coins, error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
 		return []sdk.Coins{}, err
@@ -25,18 +25,20 @@ func getAccountBalances(address string) ([]sdk.Coins, error) {
 
 	bankModule := bank.NewModule(nil, sources.BankSource, parseCtx.EncodingConfig.Marshaler, nil)
 
-	// Get latest height
-	height, err := parseCtx.Node.LatestHeight()
-	if err != nil {
-		return []sdk.Coins{}, fmt.Errorf("error while getting chain latest block height: %s", err)
+	height := input.Height
+	if height == 0 {
+		// Get latest height if height input is empty
+		height, err = parseCtx.Node.LatestHeight()
+		if err != nil {
+			return []sdk.Coins{}, fmt.Errorf("error while getting chain latest block height: %s", err)
+		}
 	}
 
-	balances, err := bankModule.Keeper.GetBalances([]string{address}, height)
+	balances, err := bankModule.Keeper.GetBalances([]string{input.Address}, height)
 	if err != nil {
 		return []sdk.Coins{}, err
 	}
 
-	// var coins []sdk.Coin
 	coins := make([]sdk.Coins, len(balances))
 	for index, bal := range balances {
 		coins[index] = bal.Balance
