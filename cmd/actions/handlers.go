@@ -9,6 +9,7 @@ import (
 )
 
 func accountBalancesHandler(w http.ResponseWriter, r *http.Request) {
+
 	w.Header().Set("Content-Type", "application/json")
 
 	reqBody, err := ioutil.ReadAll(r.Body)
