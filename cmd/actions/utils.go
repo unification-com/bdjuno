@@ -18,13 +18,13 @@ import (
 	junoconfig "github.com/forbole/juno/v2/types/config"
 )
 
-func getAccountBalances(input actionstypes.AccountBalancesArgs) ([]sdk.Coin, error) {
+func getAccountBalances(input actionstypes.AccountBalancesArgs) (actionstypes.Coins, error) {
 	log.Debug().Str("Handler", "Account balances").
 		Int64("height", input.Height)
 
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
-		return []sdk.Coin{}, err
+		return actionstypes.Coins{}, err
 	}
 
 	bankModule := bank.NewModule(nil, sources.BankSource, parseCtx.EncodingConfig.Marshaler, nil)
@@ -34,13 +34,13 @@ func getAccountBalances(input actionstypes.AccountBalancesArgs) ([]sdk.Coin, err
 		// Get latest height if height input is empty
 		height, err = parseCtx.Node.LatestHeight()
 		if err != nil {
-			return []sdk.Coin{}, fmt.Errorf("error while getting chain latest block height: %s", err)
+			return actionstypes.Coins{}, fmt.Errorf("error while getting chain latest block height: %s", err)
 		}
 	}
 
 	balances, err := bankModule.Keeper.GetBalances([]string{input.Address}, height)
 	if err != nil {
-		return []sdk.Coin{}, err
+		return actionstypes.Coins{}, err
 	}
 
 	var coins []sdk.Coin
@@ -50,7 +50,9 @@ func getAccountBalances(input actionstypes.AccountBalancesArgs) ([]sdk.Coin, err
 		}
 	}
 
-	return coins, nil
+	return actionstypes.Coins{
+		Coins: coins,
+	}, nil
 }
 
 func getDelegatorRewards(address string) (response []actionstypes.DelegatorRewards, err error) {
@@ -100,11 +102,9 @@ func getValidatorCommission(address string) (response actionstypes.DecCoins, err
 		return response, err
 	}
 
-	response = actionstypes.DecCoins{
+	return actionstypes.DecCoins{
 		DecCoins: commission,
-	}
-
-	return response, nil
+	}, nil
 }
 
 func getTotalSupply() (response actionstypes.Coins, err error) {
@@ -128,11 +128,9 @@ func getTotalSupply() (response actionstypes.Coins, err error) {
 		return response, err
 	}
 
-	response = actionstypes.Coins{
+	return actionstypes.Coins{
 		Coins: coins,
-	}
-
-	return response, nil
+	}, nil
 }
 
 func getCtxAndSources() (*parse.Context, *modules.Sources, error) {
