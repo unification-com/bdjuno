@@ -22,6 +22,7 @@ func NewActionsCmd(parseCfg *parse.Config) *cobra.Command {
 			mux := http.NewServeMux()
 			mux.HandleFunc("/account_balances", handlers.AccountBalances)
 			mux.HandleFunc("/total_supply", handlers.TotalSupply)
+			mux.HandleFunc("/validators_statuses", handlers.ValidatorsStatuses)
 
 			mux.HandleFunc("/delegator_rewards", handlers.DelegatorRewards)
 			mux.HandleFunc("/validator_commission", handlers.ValidatorCommission)

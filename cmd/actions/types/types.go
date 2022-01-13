@@ -27,6 +27,29 @@ type AccountBalancesArgs struct {
 	Height  int64  `json:"height"`
 }
 
+// ========================= Validators Statuses Payload =========================
+type ValidatorsStatusesPayload struct {
+	SessionVariables map[string]interface{} `json:"session_variables"`
+	Input            ValidatorsStatusesArgs `json:"input"`
+}
+
+type ValidatorsStatusesArgs struct {
+	Height int64 `json:"height"`
+	Status int32 `json:"status"`
+}
+
+// ========================= Validators Statuses Response =========================
+type ValidatorStatus struct {
+	ValidatorAddress string `json:"validator_address"`
+	Status           int    `json:"status"`
+	Jailed           bool   `json:"jailed"`
+	Tombstoned       bool   `json:"tombstoned"`
+}
+
+type ValidatorsStatuses struct {
+	ValidatorsStatuses []ValidatorStatus `json:"validators_statuses"`
+}
+
 // ========================= Coins =========================
 type Coins struct {
 	Coins []sdk.Coin `json:"coins"`
