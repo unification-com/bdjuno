@@ -6,6 +6,8 @@ import (
 
 	"github.com/forbole/juno/v2/cmd/parse"
 	"github.com/spf13/cobra"
+
+	"github.com/forbole/bdjuno/v2/cmd/actions/handlers"
 )
 
 // NewActionsCmd returns the Cobra command allowing to activate hasura actions
@@ -18,11 +20,11 @@ func NewActionsCmd(parseCfg *parse.Config) *cobra.Command {
 
 			// HTTP server for the handler
 			mux := http.NewServeMux()
-			mux.HandleFunc("/account_balances", accountBalancesHandler)
-			mux.HandleFunc("/total_supply", totalSupplyHandler)
-			mux.HandleFunc("/delegator_rewards", delegatorRewardsHandler)
-			mux.HandleFunc("/validator_commission", validatorCommissionHandler)
+			mux.HandleFunc("/account_balances", handlers.AccountBalances)
+			mux.HandleFunc("/total_supply", handlers.TotalSupply)
 
+			mux.HandleFunc("/delegator_rewards", handlers.DelegatorRewards)
+			mux.HandleFunc("/validator_commission", handlers.ValidatorCommission)
 
 			err := http.ListenAndServe(":3000", mux)
 			log.Fatal(err)
