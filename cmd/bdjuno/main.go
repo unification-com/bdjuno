@@ -5,6 +5,7 @@ import (
 	initcmd "github.com/forbole/juno/v2/cmd/init"
 	parsecmd "github.com/forbole/juno/v2/cmd/parse"
 
+	actionscmd "github.com/forbole/bdjuno/v2/cmd/actions"
 	fixcmd "github.com/forbole/bdjuno/v2/cmd/fix"
 	migratecmd "github.com/forbole/bdjuno/v2/cmd/migrate"
 	parsegenesiscmd "github.com/forbole/bdjuno/v2/cmd/parse-genesis"
@@ -13,7 +14,6 @@ import (
 
 	"github.com/forbole/bdjuno/v2/database"
 	"github.com/forbole/bdjuno/v2/modules"
-	actionscmd "github.com/forbole/bdjuno/v2/cmd/actions"
 	"github.com/forbole/bdjuno/v2/cmd/utils"
 
 )

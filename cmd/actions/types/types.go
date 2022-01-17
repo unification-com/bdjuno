@@ -1,6 +1,10 @@
 package types
 
-import sdk "github.com/cosmos/cosmos-sdk/types"
+import ( 
+	sdk "github.com/cosmos/cosmos-sdk/types"
+    stakingtype "github.com/cosmos/cosmos-sdk/x/staking/types"
+)
+
 
 type GraphQLError struct {
 	Message string `json:"message"`
@@ -16,52 +20,43 @@ type Address struct {
 	Address string `json:"address"`
 }
 
-// ========================= Account Balances Payload =========================
-type AccountBalancesPayload struct {
+// ========================= Account Balance =========================
+type AccountBalancePayload struct {
 	SessionVariables map[string]interface{} `json:"session_variables"`
-	Input            AccountBalancesArgs    `json:"input"`
+	Input            AccountBalanceArgs     `json:"input"`
 }
 
-type AccountBalancesArgs struct {
+type AccountBalanceArgs struct {
 	Address string `json:"address"`
 	Height  int64  `json:"height"`
 }
 
-// ========================= Validators Statuses Payload =========================
-type ValidatorsStatusesPayload struct {
-	SessionVariables map[string]interface{} `json:"session_variables"`
-	Input            ValidatorsStatusesArgs `json:"input"`
-}
-
-type ValidatorsStatusesArgs struct {
-	Height int64 `json:"height"`
-	Status int32 `json:"status"`
-}
-
-// ========================= Validators Statuses Response =========================
-type ValidatorStatus struct {
-	ValidatorAddress string `json:"validator_address"`
-	Status           int    `json:"status"`
-	Jailed           bool   `json:"jailed"`
-	Tombstoned       bool   `json:"tombstoned"`
-}
-
-type ValidatorsStatuses struct {
-	ValidatorsStatuses []ValidatorStatus `json:"validators_statuses"`
-}
-
-// ========================= Coins =========================
 type Coins struct {
-	Coins []sdk.Coin `json:"coins"`
+	Coins sdk.Coins `json:"coins"`
+}
+
+// ========================= Delegation Reward =========================
+
+type DelegatorReward struct {
+	DecCoins   sdk.DecCoins `json:"dec_coins"`
+	ValAddress string       `json:"validator_address"`
 }
 
 type DecCoins struct {
 	DecCoins []sdk.DecCoin `json:"dec_coins"`
 }
 
-// ========================= Delegator Rewards =========================
+// ========================= Validator Commission  =========================
 
-type DelegatorRewards struct {
-	DecCoins   sdk.DecCoins `json:"dec_coins"`
-	ValAddress string       `json:"validator_address"`
+type ValidatorCommission struct {
+	DecCoin     sdk.DecCoin  `json:"dec_coins"`
+	ValAddress  string       `json:"validator_address"`
+}
+
+// ========================= Unbonding Delegation  =========================
+
+type UnbondingDelegation struct {
+	DelegatorAddress string                                  `json:"delegator_address"`
+	ValidatorAddress string                                  `json:"validator_address"`
+	Entries          []stakingtype.UnbondingDelegationEntry  `json:"entries"`
 }

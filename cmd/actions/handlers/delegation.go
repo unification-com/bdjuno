@@ -7,11 +7,12 @@ import (
 	"net/http"
 
 	actionstypes "github.com/forbole/bdjuno/v2/cmd/actions/types"
+	"github.com/forbole/bdjuno/v2/modules/staking"
+	"github.com/forbole/bdjuno/v2/types"
 )
 
+func Delegation(w http.ResponseWriter, r *http.Request) {
 
-func ValidatorCommission(w http.ResponseWriter, r *http.Request) {
-	
 	w.Header().Set("Content-Type", "application/json")
 
 	reqBody, err := ioutil.ReadAll(r.Body)
@@ -27,7 +28,7 @@ func ValidatorCommission(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := getValidatorCommission(actionPayload.Input.Address)
+	result, err := getDelegation(actionPayload.Input.Address)
 	if err != nil {
 		errorHandler(w, err)
 		return
@@ -37,32 +38,23 @@ func ValidatorCommission(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-
-func getValidatorCommission(address string) (response []actionstypes.ValidatorCommission, err error) {
+func getDelegation(address string) ([]types.Delegation, error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	// Get latest node height
 	height, err := parseCtx.Node.LatestHeight()
 	if err != nil {
-		return response, fmt.Errorf("error while getting chain latest block height: %s", err)
+		return nil, fmt.Errorf("error while getting chain latest block height: %s", err)
 	}
 
-	// Get validator total commission value 
-	commission, err := sources.DistrSource.ValidatorCommission(address, height)
-		if err != nil {
-		return response, err
+	// Get delegator's total rewards
+	delegations, err := sources.StakingSource.GetDelegatorDelegations(height, address)
+	if err != nil {
+		return nil, fmt.Errorf("error while getting delegator delegations: %s", err)
 	}
 
-	response = make([]actionstypes.ValidatorCommission, len(commission))
-	for index, commission := range commission {
-		response[index] = actionstypes.ValidatorCommission{
-			DecCoin:   commission,
-			ValAddress: address,
-		}
-	}
-	
-	return response, nil
+	return staking.ConvertDelegationsResponses(height, delegations), nil
 }
