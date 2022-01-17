@@ -1,0 +1,71 @@
+actions:
+- name: account_balances
+  definition:
+    kind: synchronous
+    handler: http://localhost:3000/account_balances
+    output_type: Coins
+    arguments:
+    - name: Address
+      type: Address!
+    type: query
+    headers:
+    - value: application/json
+      name: Content-Type
+  permissions:
+  - role: anonymous
+
+- name: total_supply
+  definition:
+    kind: synchronous
+    handler: http://localhost:3000/total_supply
+    output_type: Coins
+    type: query
+    headers:
+    - value: application/json
+      name: Content-Type
+  permissions:
+  - role: anonymous
+
+- name: delegator_rewards
+  definition:
+    kind: synchronous
+    handler: http://localhost:3000/delegator_rewards
+    output_type: Coins
+    arguments:
+    - name: Address
+      type: Address!
+    type: query
+    headers:
+    - value: application/json
+      name: Content-Type
+  permissions:
+  - role: anonymous
+
+- name: validator_commission
+  definition:
+    kind: synchronous
+    handler: http://localhost:3000/validator_commission
+    output_type: Coins
+    arguments:
+    - name: Address
+      type: Address!
+    type: query
+    headers:
+    - value: application/json
+      name: Content-Type
+  permissions:
+  - role: anonymous
+
+custom_types:
+  input_objects:
+  - name: Address
+    fields:
+    - name: Address
+      type: String!
+  objects:
+  - name: Coins
+    fields:
+    - name: Coins
+      type: [Coin]!
+  scalars:
+  - name: Coin 

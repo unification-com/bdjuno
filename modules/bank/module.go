@@ -23,7 +23,7 @@ type Module struct {
 	db  *database.Db
 
 	messageParser junomessages.MessageAddressesParser
-	keeper        source.Source
+	Keeper        source.Source
 }
 
 // NewModule returns a new Module instance
@@ -34,7 +34,7 @@ func NewModule(
 		cdc:           cdc,
 		db:            db,
 		messageParser: messageParser,
-		keeper:        keeper,
+		Keeper:        keeper,
 	}
 }
 
