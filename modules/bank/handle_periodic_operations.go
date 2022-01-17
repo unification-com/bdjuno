@@ -32,7 +32,7 @@ func (m *Module) updateSupply() error {
 		return fmt.Errorf("error while getting last block: %s", err)
 	}
 
-	supply, err := m.keeper.GetSupply(block.Height)
+	supply, err := m.Keeper.GetSupply(block.Height)
 	if err != nil {
 		return err
 	}
