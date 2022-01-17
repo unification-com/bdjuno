@@ -1,0 +1,15 @@
+actions:
+- name: action_delegation_reward
+  definition:
+    kind: synchronous
+    handler: http://localhost:3000/delegation_reward
+    output_type: [DelegationReward]
+    arguments:
+    - name: address
+      type: String!
+    type: query
+    headers:
+    - value: application/json
+      name: Content-Type
+  permissions:
+  - role: anonymous
