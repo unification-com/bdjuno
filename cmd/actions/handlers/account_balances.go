@@ -7,11 +7,11 @@ import (
 	"net/http"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	actionstypes "github.com/forbole/bdjuno/v2/cmd/actions/types"
-	"github.com/forbole/bdjuno/v2/modules/bank"
 )
 
-func AccountBalances(w http.ResponseWriter, r *http.Request) {
+func AccountBalance(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -21,16 +21,16 @@ func AccountBalances(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var actionPayload actionstypes.AccountBalancesPayload
+	var actionPayload actionstypes.AccountBalancePayload
 	err = json.Unmarshal(reqBody, &actionPayload)
 	if err != nil {
 		http.Error(w, "invalid payload: failed to unmarshal json", http.StatusInternalServerError)
 		return
 	}
 
-	result, err := getAccountBalances(actionPayload.Input)
+	result, err := getAccountBalance(actionPayload.Input)
 	if err != nil {
-		graphQLError(w, err)
+		errorHandler(w, err)
 		return
 	}
 
@@ -38,27 +38,27 @@ func AccountBalances(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-func getAccountBalances(input actionstypes.AccountBalancesArgs) (actionstypes.Coins, error) {
-
+func getAccountBalance(input actionstypes.AccountBalanceArgs) (response actionstypes.Balance, err error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
-		return actionstypes.Coins{}, err
+		return response, err
 	}
 
-	bankModule := bank.NewModule(nil, sources.BankSource, parseCtx.EncodingConfig.Marshaler, nil)
-
 	height := input.Height
+	fmt.Println(height)
+
 	if height == 0 {
 		// Get latest height if height input is empty
 		height, err = parseCtx.Node.LatestHeight()
 		if err != nil {
-			return actionstypes.Coins{}, fmt.Errorf("error while getting chain latest block height: %s", err)
+			return response, fmt.Errorf("error while getting chain latest block height: %s", err)
 		}
 	}
 
-	balances, err := bankModule.Keeper.GetBalances([]string{input.Address}, height)
+	balances, err := sources.BankSource.GetBalances([]string{input.Address}, height)
+
 	if err != nil {
-		return actionstypes.Coins{}, err
+		return response, err
 	}
 
 	var coins []sdk.Coin
@@ -68,7 +68,7 @@ func getAccountBalances(input actionstypes.AccountBalancesArgs) (actionstypes.Co
 		}
 	}
 
-	return actionstypes.Coins{
+	return actionstypes.Balance{
 		Coins: coins,
 	}, nil
 }

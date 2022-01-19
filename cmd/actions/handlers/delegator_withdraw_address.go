@@ -9,7 +9,8 @@ import (
 	actionstypes "github.com/forbole/bdjuno/v2/cmd/actions/types"
 )
 
-func DelegatorRewards(w http.ResponseWriter, r *http.Request) {
+func DelegatorWithdrawAddress(w http.ResponseWriter, r *http.Request) {
+
 	w.Header().Set("Content-Type", "application/json")
 
 	reqBody, err := ioutil.ReadAll(r.Body)
@@ -25,9 +26,9 @@ func DelegatorRewards(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := getDelegatorRewards(actionPayload.Input.Address)
+	result, err := getDelegatorWithdrawAddress(actionPayload.Input.Address)
 	if err != nil {
-		graphQLError(w, err)
+		errorHandler(w, err)
 		return
 	}
 
@@ -35,8 +36,7 @@ func DelegatorRewards(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-func getDelegatorRewards(address string) (response []actionstypes.DelegatorRewards, err error) {
-
+func getDelegatorWithdrawAddress(address string) (response actionstypes.Address, err error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
 		return response, err
@@ -47,18 +47,16 @@ func getDelegatorRewards(address string) (response []actionstypes.DelegatorRewar
 	if err != nil {
 		return response, fmt.Errorf("error while getting chain latest block height: %s", err)
 	}
-	rewards, err := sources.DistrSource.DelegatorTotalRewards(address, height)
+
+	// Get delegator's total rewards
+	withdrawAddress, err := sources.DistrSource.DelegatorWithdrawAddress(address, height)
 	if err != nil {
 		return response, err
 	}
 
-	res := make([]actionstypes.DelegatorRewards, len(rewards))
-	for index, rew := range rewards {
-		res[index] = actionstypes.DelegatorRewards{
-			DecCoins:   rew.Reward,
-			ValAddress: rew.ValidatorAddress,
-		}
+	response = actionstypes.Address{
+		Address: withdrawAddress,
 	}
 
-	return res, nil
+	return response, nil
 }

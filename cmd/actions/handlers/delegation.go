@@ -9,7 +9,7 @@ import (
 	actionstypes "github.com/forbole/bdjuno/v2/cmd/actions/types"
 )
 
-func ValidatorCommissionAmount(w http.ResponseWriter, r *http.Request) {
+func Delegation(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -26,7 +26,7 @@ func ValidatorCommissionAmount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := getValidatorCommissionAmount(actionPayload.Input.Address)
+	result, err := getDelegation(actionPayload.Input.Address)
 	if err != nil {
 		errorHandler(w, err)
 		return
@@ -36,26 +36,31 @@ func ValidatorCommissionAmount(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-func getValidatorCommissionAmount(address string) (response actionstypes.ValidatorCommissionAmount, err error) {
+func getDelegation(address string) ([]actionstypes.Delegation, error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
-		return response, err
+		return nil, err
 	}
 
 	// Get latest node height
 	height, err := parseCtx.Node.LatestHeight()
 	if err != nil {
-		return response, fmt.Errorf("error while getting chain latest block height: %s", err)
+		return nil, fmt.Errorf("error while getting chain latest block height: %s", err)
 	}
 
-	// Get validator total commission value
-	commission, err := sources.DistrSource.ValidatorCommission(address, height)
+	// Get delegator's total rewards
+	delegations, err := sources.StakingSource.GetDelegatorDelegations(height, address)
 	if err != nil {
-		return response, err
+		return nil, fmt.Errorf("error while getting delegator delegations: %s", err)
 	}
 
-	response = actionstypes.ValidatorCommissionAmount{
-		Coins: commission,
+	response := make([]actionstypes.Delegation, len(delegations))
+	for index, del := range delegations {
+		response[index] = actionstypes.Delegation{
+			DelegatorAddress: del.Delegation.DelegatorAddress,
+			ValidatorAddress: del.Delegation.ValidatorAddress,
+			Coins:            del.Balance,
+		}
 	}
 
 	return response, nil
