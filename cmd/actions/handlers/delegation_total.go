@@ -72,6 +72,10 @@ func getTotalDelegationAmount(input actionstypes.StakingArgs) (actionstypes.Bala
 		}
 	}
 
+	if coinObject == nil {
+		return actionstypes.Balance{}, nil
+	}
+
 	return actionstypes.Balance{
 		Coins: coinObject,
 	}, nil
