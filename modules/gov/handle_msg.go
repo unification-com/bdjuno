@@ -90,7 +90,7 @@ func (m *Module) handleMsgSubmitProposal(tx *juno.Tx, index int, msg *govtypes.M
 func (m *Module) handleMsgDeposit(tx *juno.Tx, msg *govtypes.MsgDeposit) error {
 	deposit, err := m.source.ProposalDeposit(tx.Height, msg.ProposalId, msg.Depositor)
 	if err != nil {
-		return fmt.Errorf("error while getting proposal deposit: %s", err)
+		return fmt.Errorf("error while getting proposal deposit for depositor %s at height %v: %s", msg.Depositor, tx.Height, err)
 	}
 
 	return m.db.SaveDeposits([]types.Deposit{
