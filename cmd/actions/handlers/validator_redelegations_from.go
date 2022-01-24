@@ -11,7 +11,7 @@ import (
 	actionstypes "github.com/forbole/bdjuno/v2/cmd/actions/types"
 )
 
-func Redelegation(w http.ResponseWriter, r *http.Request) {
+func ValidatorRedelegationsFrom(w http.ResponseWriter, r *http.Request) {
 
 	w.Header().Set("Content-Type", "application/json")
 
@@ -28,7 +28,7 @@ func Redelegation(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := getRedelegation(actionPayload.Input)
+	result, err := getValidatorRedelegation(actionPayload.Input)
 	if err != nil {
 		errorHandler(w, err)
 		return
@@ -38,7 +38,7 @@ func Redelegation(w http.ResponseWriter, r *http.Request) {
 	w.Write(data)
 }
 
-func getRedelegation(input actionstypes.StakingArgs) (actionstypes.RedelegationResponse, error) {
+func getValidatorRedelegation(input actionstypes.StakingArgs) (actionstypes.RedelegationResponse, error) {
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
 		return actionstypes.RedelegationResponse{}, err
@@ -50,20 +50,18 @@ func getRedelegation(input actionstypes.StakingArgs) (actionstypes.RedelegationR
 		return actionstypes.RedelegationResponse{}, fmt.Errorf("error while getting chain latest block height: %s", err)
 	}
 
-	pagination := &query.PageRequest{
-		Offset:     input.Offset,
-		Limit:      input.Limit,
-		CountTotal: input.CountTotal,
-	}
-
-	// Get delegator's redelegations
+	// Get redelegations from a source validator address
 	redelegationRequest := &stakingtypes.QueryRedelegationsRequest{
-		DelegatorAddr: input.Address,
-		Pagination:    pagination,
+		SrcValidatorAddr: input.Address,
+		Pagination: &query.PageRequest{
+			Offset:     input.Offset,
+			Limit:      input.Limit,
+			CountTotal: input.CountTotal,
+		},
 	}
 	redelegations, err := sources.StakingSource.GetRedelegations(height, redelegationRequest)
 	if err != nil {
-		return actionstypes.RedelegationResponse{}, fmt.Errorf("error while getting delegator redelegations: %s", err)
+		return actionstypes.RedelegationResponse{}, fmt.Errorf("error while getting redelegations from validator: %s", err)
 	}
 
 	redelegationsList := make([]actionstypes.Redelegation, len(redelegations.RedelegationResponses))
@@ -81,7 +79,6 @@ func getRedelegation(input actionstypes.StakingArgs) (actionstypes.RedelegationR
 				Balance:        entry.Balance,
 			}
 		}
-
 		redelegationsList[index].RedelegationEntries = RedelegationEntriesList
 	}
 
