@@ -20,14 +20,6 @@ type Source struct {
 	bankClient banktypes.QueryClient
 }
 
-// NewSource builds a new Source instance
-func NewSource(source *remote.Source, bankClient banktypes.QueryClient) *Source {
-	return &Source{
-		Source:     source,
-		bankClient: bankClient,
-	}
-}
-
 // GetBalances implements bankkeeper.Source
 func (s Source) GetBalances(addresses []string, height int64) ([]types.AccountBalance, error) {
 	header := remote.GetHeightRequestHeader(height)
@@ -47,6 +39,14 @@ func (s Source) GetBalances(addresses []string, height int64) ([]types.AccountBa
 	}
 
 	return balances, nil
+}
+
+// NewSource builds a new Source instance
+func NewSource(source *remote.Source, bankClient banktypes.QueryClient) *Source {
+	return &Source{
+		Source:     source,
+		bankClient: bankClient,
+	}
 }
 
 // GetSupply implements bankkeeper.Source
