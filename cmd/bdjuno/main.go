@@ -19,7 +19,7 @@ import (
 	osmosisapp "github.com/osmosis-labs/osmosis/app"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	junomessages "github.com/desmos-labs/juno/modules/messages"
+	junomessages "github.com/forbole/juno/v2/modules/messages"
 	gammtypes "github.com/osmosis-labs/osmosis/x/gamm/types"
 )
 
