@@ -21,7 +21,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
+	minttypes "github.com/osmosis-labs/osmosis/x/mint/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
@@ -63,6 +63,8 @@ import (
 	stakingsource "github.com/forbole/bdjuno/v2/modules/staking/source"
 	localstakingsource "github.com/forbole/bdjuno/v2/modules/staking/source/local"
 	remotestakingsource "github.com/forbole/bdjuno/v2/modules/staking/source/remote"
+	osmosisapp "github.com/osmosis-labs/osmosis/app"
+
 )
 
 // UniqueAddressesParser returns a wrapper around the given parser that removes all duplicated addresses
@@ -161,9 +163,10 @@ func buildLocalSources(cfg *local.Details, encodingConfig *params.EncodingConfig
 		return nil, err
 	}
 
-	app := simapp.NewSimApp(
+
+	app := osmosisapp.NewOsmosisApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)), source.StoreDB, nil, true, map[int64]bool{},
-		cfg.Home, 0, simapp.MakeTestEncodingConfig(), simapp.EmptyAppOptions{},
+		cfg.Home, 0, osmosisapp.MakeEncodingConfig(), simapp.EmptyAppOptions{},
 	)
 
 	sources := &Sources{
