@@ -4,7 +4,7 @@ import (
 	"github.com/cosmos/cosmos-sdk/types/query"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/forbole/bdjuno/v2/utils"
-	"github.com/forbole/juno/v2/node/remote"
+	// "github.com/forbole/juno/v2/node/remote"
 )
 
 // GetDelegationsWithPagination implements stakingsource.Source
@@ -59,7 +59,7 @@ func (s Source) GetRedelegations(height int64, request *stakingtypes.QueryRedele
 func (s Source) GetValidatorDelegationsWithPagination(
 	height int64, validator string, pagination *query.PageRequest,
 ) (*stakingtypes.QueryValidatorDelegationsResponse, error) {
-	header := remote.GetHeightRequestHeader(height)
+	// header := remote.GetHeightRequestContext(s.Ctx, height)
 
 	res, err := s.stakingClient.ValidatorDelegations(
 		s.Ctx,
@@ -67,7 +67,6 @@ func (s Source) GetValidatorDelegationsWithPagination(
 			ValidatorAddr: validator,
 			Pagination:    pagination,
 		},
-		header,
 	)
 	if err != nil {
 		return nil, err
@@ -80,7 +79,7 @@ func (s Source) GetValidatorDelegationsWithPagination(
 func (s Source) GetUnbondingDelegationsFromValidator(
 	height int64, validator string, pagination *query.PageRequest,
 ) (*stakingtypes.QueryValidatorUnbondingDelegationsResponse, error) {
-	header := remote.GetHeightRequestHeader(height)
+	// header := remote.GetHeightRequestContext(s.Ctx, height)
 
 	unbondingDelegations, err := s.stakingClient.ValidatorUnbondingDelegations(
 		s.Ctx,
@@ -88,7 +87,7 @@ func (s Source) GetUnbondingDelegationsFromValidator(
 			ValidatorAddr: validator,
 			Pagination:    pagination,
 		},
-		header,
+		// header,
 	)
 	if err != nil {
 		return nil, err

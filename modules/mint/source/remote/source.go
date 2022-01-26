@@ -28,7 +28,7 @@ func NewSource(source *remote.Source, querier minttypes.QueryClient) *Source {
 
 // Params implements mintsource.Source
 func (s Source) Params(height int64) (minttypes.Params, error) {
-	res, err := s.querier.Params(s.Ctx, &minttypes.QueryParamsRequest{}, remote.GetHeightRequestHeader(height))
+	res, err := s.querier.Params(remote.GetHeightRequestContext(s.Ctx, height), &minttypes.QueryParamsRequest{})
 	if err != nil {
 		return minttypes.Params{}, nil
 	}
