@@ -7,7 +7,7 @@ require (
 	github.com/cosmos/cosmos-sdk v0.44.5
 	github.com/cosmos/gaia/v6 v6.0.0
 	github.com/cosmos/ibc-go v1.2.0
-	github.com/forbole/juno/v2 v2.0.0-20220117075513-d927d34156a9
+	github.com/forbole/juno/v2 v2.0.0-20220126215922-caf84e6d78f4
 	github.com/go-co-op/gocron v1.11.0
 	github.com/gogo/protobuf v1.3.3
 	github.com/jmoiron/sqlx v1.2.1-0.20200324155115-ee514944af4b
@@ -18,7 +18,7 @@ require (
 	github.com/spf13/cobra v1.3.0
 	github.com/stretchr/testify v1.7.0
 	github.com/tendermint/tendermint v0.34.15
-	google.golang.org/grpc v1.42.0
+	google.golang.org/grpc v1.43.0
 	gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b
 )
 
