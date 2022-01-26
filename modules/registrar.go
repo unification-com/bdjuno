@@ -64,7 +64,9 @@ import (
 	stakingsource "github.com/forbole/bdjuno/v2/modules/staking/source"
 	localstakingsource "github.com/forbole/bdjuno/v2/modules/staking/source/local"
 	remotestakingsource "github.com/forbole/bdjuno/v2/modules/staking/source/remote"
+	// osmosisapp "github.com/MonikaCat/osmosis/v6/app"
 	osmosisapp "github.com/osmosis-labs/osmosis/app"
+
 
 )
 
@@ -163,6 +165,10 @@ func buildLocalSources(cfg *local.Details, encodingConfig *params.EncodingConfig
 		return nil, err
 	}
 
+	// simmApp := simapp.NewSimApp(
+	// 	log.NewTMLogger(log.NewSyncWriter(os.Stdout)), source.StoreDB, nil, true, map[int64]bool{},
+	// 	cfg.Home, 0, simapp.MakeTestEncodingConfig(), simapp.EmptyAppOptions{},
+	// )
 
 	app := osmosisapp.NewOsmosisApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)), source.StoreDB, nil, true, map[int64]bool{},

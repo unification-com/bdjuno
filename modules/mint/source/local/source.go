@@ -4,7 +4,9 @@ import (
 	"fmt"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
+	// minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	minttypes "github.com/osmosis-labs/osmosis/x/mint/types"
+
 	"github.com/forbole/juno/v2/node/local"
 
 	mintsource "github.com/forbole/bdjuno/v2/modules/mint/source"
@@ -28,6 +30,21 @@ func NewSource(source *local.Source, querier minttypes.QueryServer) *Source {
 	}
 }
 
+// GetInflation implements mintsource.Source
+func (s Source) GetInflation(height int64) (sdk.Dec, error) {
+	// ctx, err := s.LoadHeight(height)
+	// if err != nil {
+	// 	return sdk.Dec{}, fmt.Errorf("error while loading height: %s", err)
+	// }
+
+	res, err := s.GetInflation(height)
+	// querier.Inflation(sdk.WrapSDKContext(ctx), &minttypes.QueryInflationRequest{})
+	if err != nil {
+		return sdk.Dec{}, err
+	}
+
+	return res, nil
+}
 
 // Params implements mintsource.Source
 func (s Source) Params(height int64) (minttypes.Params, error) {

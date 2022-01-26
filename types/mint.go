@@ -1,6 +1,8 @@
 package types
 
-import minttypes "github.com/osmosis-labs/osmosis/x/mint/types"
+// import minttypes  "github.com/cosmos/cosmos-sdk/x/mint/types"
+import	minttypes "github.com/osmosis-labs/osmosis/x/mint/types"
+ 
 
 // MintParams represents the x/mint parameters
 type MintParams struct {
