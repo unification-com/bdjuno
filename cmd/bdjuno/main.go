@@ -17,6 +17,8 @@ import (
 	"github.com/forbole/bdjuno/v2/modules"
 
 	gaiaapp "github.com/cosmos/gaia/v6/app"
+	osmosisapp "github.com/MonikaCat/osmosis/v6/app"
+
 )
 
 func main() {
@@ -53,6 +55,8 @@ func main() {
 func getBasicManagers() []module.BasicManager {
 	return []module.BasicManager{
 		gaiaapp.ModuleBasics,
+		osmosisapp.ModuleBasics,
+
 	}
 }
 
