@@ -16,6 +16,8 @@ import (
 
 	"github.com/forbole/bdjuno/v2/database"
 	"github.com/forbole/bdjuno/v2/modules"
+
+	akashapp "github.com/ovrclk/akash/app"
 )
 
 func main() {
@@ -52,6 +54,7 @@ func main() {
 func getBasicManagers() []module.BasicManager {
 	return []module.BasicManager{
 		simapp.ModuleBasics,
+		akashapp.ModuleBasics(),
 	}
 }
 
