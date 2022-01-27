@@ -51,18 +51,20 @@ func (s Source) GetBalances(addresses []string, height int64) ([]types.AccountBa
 }
 
 // GetSupply implements keeper.Source
-func (s Source) GetSupply(height int64, denom string) (sdk.Coin, error) {
+func (s Source) GetSupply(height int64, denom string) (sdk.Coins, error) {
+	var supply sdk.Coins
 	ctx, err := s.LoadHeight(height)
 	if err != nil {
-		return sdk.Coin{}, fmt.Errorf("error while loading height: %s", err)
+		return nil, fmt.Errorf("error while loading height: %s", err)
 	}
 
 	res, err := s.q.SupplyOf(sdk.WrapSDKContext(ctx), &banktypes.QuerySupplyOfRequest{Denom: denom})
 	if err != nil {
-		return sdk.Coin{}, err
+		return nil, err
 	}
-
-	return res.Amount, nil
+	supply = append(supply,res.Amount)
+	
+	return supply, nil
 }
 
 // GetAccountBalances implements bankkeeper.Source
