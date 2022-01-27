@@ -50,11 +50,15 @@ func NewSource(source *remote.Source, bankClient banktypes.QueryClient) *Source 
 }
 
 // GetSupply implements bankkeeper.Source
-func (s Source) GetSupply(height int64) (sdk.Coins, error) {
-	res, err := s.bankClient.TotalSupply(remote.GetHeightRequestContext(s.Ctx, height), &banktypes.QueryTotalSupplyRequest{})
+func (s Source) GetSupply(height int64, denom string) (sdk.Coin, error) {
+	res, err := s.bankClient.SupplyOf(remote.GetHeightRequestContext(s.Ctx, height), &banktypes.QuerySupplyOfRequest{Denom: denom})
 	if err != nil {
-		return nil, fmt.Errorf("error while getting total supply: %s", err)
+		return sdk.Coin{}, fmt.Errorf("error while getting total supply: %s", err)
 	}
 
-	return res.Supply, nil
+
+
+	// resp = sdk.NewCoin(res.Denom, sdk.NewInt(res.Amount))
+
+	return res.Amount, nil
 }

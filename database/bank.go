@@ -10,7 +10,7 @@ import (
 )
 
 // SaveSupply allows to save for the given height the given total amount of coins
-func (db *Db) SaveSupply(coins sdk.Coins, height int64) error {
+func (db *Db) SaveSupply(coins sdk.Coin, height int64) error {
 	query := `
 INSERT INTO supply (coins, height) 
 VALUES ($1, $2) 
@@ -19,7 +19,7 @@ ON CONFLICT (one_row_id) DO UPDATE
     	height = excluded.height
 WHERE supply.height <= excluded.height`
 
-	_, err := db.Sql.Exec(query, pq.Array(dbtypes.NewDbCoins(coins)), height)
+	_, err := db.Sql.Exec(query, pq.Array(dbtypes.NewDbCoin(coins)), height)
 	if err != nil {
 		return fmt.Errorf("error while storing supply: %s", err)
 	}
