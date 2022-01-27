@@ -85,7 +85,7 @@ array_relationships:
 - name: provider_owners
   using:
     foreign_key_constraint_on:
-      column: owner
+      column: owner_address
       table:
         name: provider
         schema: public

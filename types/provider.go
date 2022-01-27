@@ -12,6 +12,8 @@ type Provider struct {
 	Attributes   []akashtypes.Attribute
 	Info         providertypes.ProviderInfo
 	Height       int64
+	// TO-DO:
+	// JWTHostURI ??
 }
 
 // NewProvider allows to build a new Provider instance

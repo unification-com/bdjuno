@@ -31,6 +31,7 @@ func NewProviderRow(ownerAddress string, hostURI string, attributes string, info
 func (a ProviderRow) Equal(b ProviderRow) bool {
 	return a.OwnerAddress == b.OwnerAddress &&
 		a.HostURI == b.HostURI &&
+		// TO-DO: check those stored as JSON, how to equal??
 		a.Attributes == b.Attributes &&
 		a.Info.Equal(b.Info) &&
 		a.Height == b.Height
