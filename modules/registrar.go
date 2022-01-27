@@ -25,6 +25,9 @@ import (
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+	akashprovider "github.com/ovrclk/akash/x/provider"
+	providertypes "github.com/ovrclk/akash/x/provider/types"
+
 	"github.com/forbole/juno/v2/node/local"
 
 	jmodules "github.com/forbole/juno/v2/modules"
@@ -56,6 +59,10 @@ import (
 	remotemintsource "github.com/forbole/bdjuno/v2/modules/mint/source/remote"
 	"github.com/forbole/bdjuno/v2/modules/modules"
 	"github.com/forbole/bdjuno/v2/modules/pricefeed"
+	"github.com/forbole/bdjuno/v2/modules/provider"
+	providersource "github.com/forbole/bdjuno/v2/modules/provider/source"
+	localprovidersource "github.com/forbole/bdjuno/v2/modules/provider/source/local"
+	remoteprovidersource "github.com/forbole/bdjuno/v2/modules/provider/source/remote"
 	slashingsource "github.com/forbole/bdjuno/v2/modules/slashing/source"
 	localslashingsource "github.com/forbole/bdjuno/v2/modules/slashing/source/local"
 	remoteslashingsource "github.com/forbole/bdjuno/v2/modules/slashing/source/remote"
@@ -129,6 +136,7 @@ func (r *Registrar) BuildModules(ctx registrar.Context) jmodules.Modules {
 		mint.NewModule(sources.MintSource, cdc, db),
 		modules.NewModule(ctx.JunoConfig.Chain, db),
 		pricefeed.NewModule(ctx.JunoConfig, historyModule, cdc, db),
+		provider.NewModule(sources.ProviderSource, cdc, db),
 		slashing.NewModule(sources.SlashingSource, stakingModule, cdc, db),
 		stakingModule,
 	}
@@ -141,6 +149,7 @@ type Sources struct {
 	MintSource     mintsource.Source
 	SlashingSource slashingsource.Source
 	StakingSource  stakingsource.Source
+	ProviderSource providersource.Source
 }
 
 func BuildSources(nodeCfg nodeconfig.Config, encodingConfig *params.EncodingConfig) (*Sources, error) {
@@ -173,6 +182,7 @@ func buildLocalSources(cfg *local.Details, encodingConfig *params.EncodingConfig
 		MintSource:     localmintsource.NewSource(source, minttypes.QueryServer(app.MintKeeper)),
 		SlashingSource: localslashingsource.NewSource(source, slashingtypes.QueryServer(app.SlashingKeeper)),
 		StakingSource:  localstakingsource.NewSource(source, stakingkeeper.Querier{Keeper: app.StakingKeeper}),
+		ProviderSource: localprovidersource.NewSource(source, akashprovider.NewKeeper(encodingConfig.Marshaler, sdk.NewKVStoreKey(akashprovider.StoreKey)).NewQuerier()),
 	}
 
 	// Mount and initialize the stores
@@ -212,5 +222,6 @@ func buildRemoteSources(cfg *remote.Details) (*Sources, error) {
 		MintSource:     remotemintsource.NewSource(source, minttypes.NewQueryClient(source.GrpcConn)),
 		SlashingSource: remoteslashingsource.NewSource(source, slashingtypes.NewQueryClient(source.GrpcConn)),
 		StakingSource:  remotestakingsource.NewSource(source, stakingtypes.NewQueryClient(source.GrpcConn)),
+		ProviderSource: remoteprovidersource.NewSource(source, providertypes.NewQueryClient(source.GrpcConn)),
 	}, nil
 }
