@@ -7,7 +7,7 @@ require (
 	github.com/cosmos/cosmos-sdk v0.44.5
 	github.com/cosmos/gaia/v6 v6.0.0
 	github.com/cosmos/ibc-go v1.2.5
-	github.com/forbole/juno/v2 v2.0.0-20220126170316-a7d4812d6af2
+	github.com/forbole/juno/v2 v2.0.0-20220131150637-4b0db7009ac8
 	github.com/go-co-op/gocron v0.3.3
 	github.com/gogo/protobuf v1.3.3
 	github.com/jmoiron/sqlx v1.3.4
@@ -138,7 +138,7 @@ replace github.com/tendermint/tendermint => github.com/forbole/tendermint v0.34.
 
 // replace github.com/tendermint/tendermint => github.com/osmosis-labs/tendermint v0.34.12-0.20220109173307-59a781894ea7
 
-// replace with custom bdjuno version of github.com/osmosis-labs/cosmos-sdk v0.43.0-rc3.0.20220113004200-25c21881e470 
+// replace with custom bdjuno version of github.com/osmosis-labs/cosmos-sdk v0.43.0-rc3.0.20220113004200-25c21881e470
 replace github.com/cosmos/cosmos-sdk => github.com/MonOsmosis/cosmos-sdk v0.44.3-osmo-v5-bdjuno
 
 replace github.com/cosmos/ibc-go/v2 => github.com/osmosis-labs/ibc-go/v2 v2.0.2-osmo
