@@ -136,9 +136,9 @@ replace github.com/gogo/protobuf => github.com/MonOsmosis/protobuf v1.3.3-alpha.
 
 replace google.golang.org/grpc => google.golang.org/grpc v1.33.2
 
-replace github.com/tendermint/tendermint => github.com/forbole/tendermint v0.34.13-0.20210820072129-a2a4af55563d
+// replace github.com/tendermint/tendermint => github.com/forbole/tendermint v0.34.13-0.20210820072129-a2a4af55563d
 
-// replace github.com/tendermint/tendermint => github.com/osmosis-labs/tendermint v0.34.12-0.20220109173307-59a781894ea7
+replace github.com/tendermint/tendermint => github.com/osmosis-labs/tendermint v0.34.12-0.20220109173307-59a781894ea7
 
 // replace with custom bdjuno version of github.com/osmosis-labs/cosmos-sdk v0.43.0-rc3.0.20220113004200-25c21881e470
 replace github.com/cosmos/cosmos-sdk => github.com/MonOsmosis/cosmos-sdk v0.44.3-osmo-v5-bdjuno
