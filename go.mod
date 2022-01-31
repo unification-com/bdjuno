@@ -142,3 +142,5 @@ replace github.com/tendermint/tendermint => github.com/osmosis-labs/tendermint v
 replace github.com/cosmos/cosmos-sdk => github.com/MonOsmosis/cosmos-sdk v0.44.3-osmo-v5-bdjuno
 
 replace github.com/cosmos/ibc-go/v2 => github.com/osmosis-labs/ibc-go/v2 v2.0.2-osmo
+
+replace github.com/cosmos/ledger-cosmos-go => github.com/desmos-labs/ledger-desmos-go v0.11.2-0.20210814121638-5d87e392e8a9
