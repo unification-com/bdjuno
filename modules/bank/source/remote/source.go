@@ -20,14 +20,6 @@ type Source struct {
 	bankClient banktypes.QueryClient
 }
 
-// NewSource builds a new Source instance
-func NewSource(source *remote.Source, bankClient banktypes.QueryClient) *Source {
-	return &Source{
-		Source:     source,
-		bankClient: bankClient,
-	}
-}
-
 // GetBalances implements bankkeeper.Source
 func (s Source) GetBalances(addresses []string, height int64) ([]types.AccountBalance, error) {
 	ctx := remote.GetHeightRequestContext(s.Ctx, height)
@@ -49,12 +41,22 @@ func (s Source) GetBalances(addresses []string, height int64) ([]types.AccountBa
 	return balances, nil
 }
 
+// NewSource builds a new Source instance
+func NewSource(source *remote.Source, bankClient banktypes.QueryClient) *Source {
+	return &Source{
+		Source:     source,
+		bankClient: bankClient,
+	}
+}
+
 // GetSupply implements bankkeeper.Source
-func (s Source) GetSupply(height int64) (sdk.Coins, error) {
-	res, err := s.bankClient.TotalSupply(remote.GetHeightRequestContext(s.Ctx, height), &banktypes.QueryTotalSupplyRequest{})
+func (s Source) GetSupply(height int64, denom string) (sdk.Coins, error) {
+	var supply sdk.Coins
+	res, err := s.bankClient.SupplyOf(remote.GetHeightRequestContext(s.Ctx, height), &banktypes.QuerySupplyOfRequest{Denom: denom})
 	if err != nil {
 		return nil, fmt.Errorf("error while getting total supply: %s", err)
 	}
+	supply = append(supply, res.Amount)
 
-	return res.Supply, nil
+	return supply, nil
 }

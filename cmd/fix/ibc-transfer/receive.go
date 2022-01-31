@@ -37,7 +37,7 @@ func receivedCmd(parseConfig *parse.Config) *cobra.Command {
 			// Get the database
 			db := database.Cast(parseCtx.Database)
 
-			bankModule := bank.NewModule(messages.CosmosMessageAddressesParser, sources.BankSource, parseCtx.EncodingConfig.Marshaler, db)
+			bankModule := bank.NewModule(messages.CosmosMessageAddressesParser, sources.BankSource, sources.StakingSource, parseCtx.EncodingConfig.Marshaler, db)
 			err = refreshIBCReceivePacket(parseCtx, bankModule)
 			if err != nil {
 				return err

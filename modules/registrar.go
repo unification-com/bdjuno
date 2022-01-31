@@ -16,12 +16,12 @@ import (
 	"github.com/forbole/bdjuno/v2/modules/history"
 	"github.com/forbole/bdjuno/v2/modules/slashing"
 
+	minttypes "github.com/MonikaCat/osmosis/v6/x/mint/types"
 	"github.com/cosmos/cosmos-sdk/codec"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	distrtypes "github.com/cosmos/cosmos-sdk/x/distribution/types"
 	govtypes "github.com/cosmos/cosmos-sdk/x/gov/types"
-	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 	slashingtypes "github.com/cosmos/cosmos-sdk/x/slashing/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
@@ -45,6 +45,7 @@ import (
 	"github.com/forbole/bdjuno/v2/modules/distribution"
 	"github.com/forbole/bdjuno/v2/modules/feegrant"
 
+	osmosisapp "github.com/MonikaCat/osmosis/v6/app"
 	distrsource "github.com/forbole/bdjuno/v2/modules/distribution/source"
 	localdistrsource "github.com/forbole/bdjuno/v2/modules/distribution/source/local"
 	remotedistrsource "github.com/forbole/bdjuno/v2/modules/distribution/source/remote"
@@ -108,7 +109,6 @@ func (r *Registrar) BuildModules(ctx registrar.Context) jmodules.Modules {
 	}
 
 	authModule := auth.NewModule(r.parser, cdc, db)
-	bankModule := bank.NewModule(r.parser, sources.BankSource, cdc, db)
 	consensusModule := consensus.NewModule(db)
 	distrModule := distribution.NewModule(ctx.JunoConfig, sources.DistrSource, cdc, db)
 	feegrantModule := feegrant.NewModule(cdc, db)
@@ -116,7 +116,7 @@ func (r *Registrar) BuildModules(ctx registrar.Context) jmodules.Modules {
 	mintModule := mint.NewModule(sources.MintSource, cdc, db)
 	slashingModule := slashing.NewModule(sources.SlashingSource, cdc, db)
 	stakingModule := staking.NewModule(sources.StakingSource, slashingModule, cdc, db)
-	govModule := gov.NewModule(sources.GovSource, authModule, distrModule, mintModule, slashingModule, stakingModule, cdc, db)
+	bankModule := bank.NewModule(r.parser, sources.BankSource, sources.StakingSource, cdc, db)
 
 	return []jmodules.Module{
 		messages.NewModule(r.parser, cdc, ctx.Database),
@@ -128,7 +128,7 @@ func (r *Registrar) BuildModules(ctx registrar.Context) jmodules.Modules {
 		consensusModule,
 		distrModule,
 		feegrantModule,
-		govModule,
+		gov.NewModule(sources.GovSource, authModule, distrModule, mintModule, slashingModule, stakingModule, cdc, db),
 		historyModule,
 		mint.NewModule(sources.MintSource, cdc, db),
 		modules.NewModule(ctx.JunoConfig.Chain, db),
@@ -165,9 +165,9 @@ func buildLocalSources(cfg *local.Details, encodingConfig *params.EncodingConfig
 		return nil, err
 	}
 
-	app := simapp.NewSimApp(
+	app := osmosisapp.NewOsmosisApp(
 		log.NewTMLogger(log.NewSyncWriter(os.Stdout)), source.StoreDB, nil, true, map[int64]bool{},
-		cfg.Home, 0, simapp.MakeTestEncodingConfig(), simapp.EmptyAppOptions{},
+		cfg.Home, 0, osmosisapp.MakeEncodingConfig(), simapp.EmptyAppOptions{},
 	)
 
 	sources := &Sources{
@@ -176,7 +176,7 @@ func buildLocalSources(cfg *local.Details, encodingConfig *params.EncodingConfig
 		GovSource:      localgovsource.NewSource(source, govtypes.QueryServer(app.GovKeeper)),
 		MintSource:     localmintsource.NewSource(source, minttypes.QueryServer(app.MintKeeper)),
 		SlashingSource: localslashingsource.NewSource(source, slashingtypes.QueryServer(app.SlashingKeeper)),
-		StakingSource:  localstakingsource.NewSource(source, stakingkeeper.Querier{Keeper: app.StakingKeeper}),
+		StakingSource:  localstakingsource.NewSource(source, stakingkeeper.Querier{Keeper: *app.StakingKeeper}),
 	}
 
 	// Mount and initialize the stores
