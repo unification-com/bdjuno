@@ -71,16 +71,11 @@ func getUnbondingDelegationsTotalAmount(input actionstypes.PayloadArgs) (actions
 		}
 	}
 
-	fmt.Println("total Amount: ", totalAmount)
-	fmt.Println("totalAmount.String(): ", totalAmount.String())
-
 	// coins = append(coins, sdk.NewCoin(params.BondDenom, sdk.NewInt(totalAmount.Int64())))
 	coins = append(coins, actionstypes.Coin{
 		Denom:  params.BondDenom,
 		Amount: totalAmount.String(),
 	})
-
-	fmt.Println("coins: ", coins)
 
 	return actionstypes.Balance{
 		Coins: coins,

@@ -72,9 +72,7 @@ func getTotalDelegationAmount(input actionstypes.PayloadArgs) (actionstypes.Bala
 		}
 	}
 
-	res := convertSdkCoins(coinObject)
-
 	return actionstypes.Balance{
-		Coins: res,
+		Coins: convertSdkCoins(coinObject),
 	}, nil
 }
