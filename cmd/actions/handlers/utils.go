@@ -5,6 +5,7 @@ import (
 	"net/http"
 
 	"github.com/cosmos/cosmos-sdk/simapp"
+	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	actionstypes "github.com/forbole/bdjuno/v2/cmd/actions/types"
 	"github.com/forbole/bdjuno/v2/database"
@@ -45,4 +46,15 @@ func errorHandler(w http.ResponseWriter, err error) {
 	errorBody, _ := json.Marshal(errorObject)
 	w.WriteHeader(http.StatusBadRequest)
 	w.Write(errorBody)
+}
+
+func convertSdkCoins(sdkCoin sdk.Coins) []actionstypes.Coin {
+	actionCoins := make([]actionstypes.Coin, len(sdkCoin))
+	for index, s := range sdkCoin {
+		actionCoins[index] = actionstypes.Coin{
+			Denom:  s.Denom,
+			Amount: s.Amount.String(),
+		}
+	}
+	return actionCoins
 }

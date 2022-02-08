@@ -53,7 +53,9 @@ func getAccountBalance(input actionstypes.PayloadArgs) (response actionstypes.Ba
 		return response, err
 	}
 
+	res := convertSdkCoins(balance)
+
 	return actionstypes.Balance{
-		Coins: balance,
+		Coins: res,
 	}, nil
 }
