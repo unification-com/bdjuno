@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"math/big"
 	"net/http"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -56,7 +57,7 @@ func getUnbondingDelegationsTotalAmount(input actionstypes.PayloadArgs) (actions
 	}
 
 	var coins sdk.Coins
-	var totalAmount int64
+	totalAmount := big.NewInt(0)
 
 	// Get the bond denom type
 	params, err := sources.StakingSource.GetParams(height)
@@ -67,14 +68,15 @@ func getUnbondingDelegationsTotalAmount(input actionstypes.PayloadArgs) (actions
 	// Add up total value of unbonding delegations
 	for _, eachUnbondingDelegation := range unbondingDelegations.UnbondingResponses {
 		for _, entry := range eachUnbondingDelegation.Entries {
-			fmt.Println("Balance: ", entry.Balance)
-			totalAmount += entry.Balance.Int64()
+			totalAmount = totalAmount.Add(totalAmount, entry.Balance.BigInt())
 		}
 	}
 
 	fmt.Println("total Amount: ", totalAmount)
 
-	coins = append(coins, sdk.NewCoin(params.BondDenom, sdk.NewInt(totalAmount)))
+	coins = append(coins, sdk.NewCoin(params.BondDenom, sdk.NewInt(totalAmount.Int64())))
+
+	fmt.Println("coins: ", coins)
 
 	return actionstypes.Balance{
 		Coins: coins,
