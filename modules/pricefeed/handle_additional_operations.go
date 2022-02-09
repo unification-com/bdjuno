@@ -43,11 +43,9 @@ func (m *Module) storeTokens() error {
 		// Create the price entry
 		for _, unit := range coin.Units {
 			// Skip units with empty price ids
-			if unit.PriceID == "" {
-				continue
+			if len(unit.PriceID) > 0 {
+				prices = append(prices, types.NewTokenPrice(unit.Denom, 0, 0, time.Time{}))
 			}
-
-			prices = append(prices, types.NewTokenPrice(unit.Denom, 0, 0, time.Time{}))
 		}
 	}
 
