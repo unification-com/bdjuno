@@ -37,22 +37,21 @@ func (m *Module) updatePrice() error {
 		return fmt.Errorf("error while getting tokens price id: %s", err)
 	}
 
-	if len(ids) == 0 {
-		log.Debug().Str("module", "pricefeed").Msg("no traded tokens price id found")
-		return nil
-	}
+	if len(ids) > 0 {
+		// Get the tokens prices
+		prices, err := coingecko.GetTokensPrices(ids)
+		if err != nil {
+			return fmt.Errorf("error while getting tokens prices: %s", err)
+		}
 
-	// Get the tokens prices
-	prices, err := coingecko.GetTokensPrices(ids)
-	if err != nil {
-		return fmt.Errorf("error while getting tokens prices: %s", err)
-	}
+		// Save the token prices
+		err = m.db.SaveTokensPrices(prices)
+		if err != nil {
+			return fmt.Errorf("error while saving token prices: %s", err)
+		}
 
-	// Save the token prices
-	err = m.db.SaveTokensPrices(prices)
-	if err != nil {
-		return fmt.Errorf("error while saving token prices: %s", err)
+		return m.historyModule.UpdatePricesHistory(prices)
 	}
+	return nil
 
-	return m.historyModule.UpdatePricesHistory(prices)
 }
