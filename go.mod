@@ -33,3 +33,5 @@ replace github.com/cosmos/cosmos-sdk => github.com/desmos-labs/cosmos-sdk v0.43.
 replace github.com/99designs/keyring => github.com/cosmos/keyring v1.1.7-0.20210622111912-ef00f8ac3d76
 
 replace github.com/cosmos/ledger-cosmos-go => github.com/desmos-labs/ledger-desmos-go v0.11.2-0.20210814121638-5d87e392e8a9
+
+replace github.com/forbole/juno/v2 => github.com/forbole/juno/v2 v2.0.0-20220210053926-06555eb87331
