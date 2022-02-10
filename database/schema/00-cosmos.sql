@@ -38,7 +38,7 @@ ALTER TABLE block
 
 CREATE TABLE transaction
 (
-    hash         TEXT    NOT NULL UNIQUE PRIMARY KEY,
+    hash         TEXT    NOT NULL,
     height       BIGINT  NOT NULL REFERENCES block (height),
     success      BOOLEAN NOT NULL,
 
@@ -58,8 +58,8 @@ CREATE TABLE transaction
     logs         JSONB,
 
     /* Psql partition */
-    partition_id BIGINT NOT NULL
-
+    partition_id BIGINT NOT NULL,
+    PRIMARY KEY(hash, partition_id)
 )PARTITION BY LIST(partition_id);
 CREATE INDEX transaction_hash_index ON transaction (hash);
 CREATE INDEX transaction_height_index ON transaction (height);
@@ -73,7 +73,7 @@ ALTER TABLE transaction
 
 CREATE TABLE message
 (
-    transaction_hash            TEXT   NOT NULL REFERENCES transaction (hash),
+    transaction_hash            TEXT   NOT NULL,
     index                       BIGINT NOT NULL,
     type                        TEXT   NOT NULL,
     value                       JSONB  NOT NULL,
