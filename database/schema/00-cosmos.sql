@@ -77,7 +77,10 @@ CREATE TABLE message
     index                       BIGINT NOT NULL,
     type                        TEXT   NOT NULL,
     value                       JSONB  NOT NULL,
-    involved_accounts_addresses TEXT[] NULL
+    involved_accounts_addresses TEXT[] NULL,
+    /* Psql partition */
+    partition_id BIGINT NOT NULL,
+    PRIMARY KEY(partition_id)
 );
 CREATE INDEX message_transaction_hash_index ON message (transaction_hash);
 CREATE INDEX message_type_index ON message (type);
@@ -94,7 +97,7 @@ CREATE FUNCTION messages_by_address(
     "offset" BIGINT = 0)
     RETURNS SETOF message AS
 $$
-SELECT message.transaction_hash, message.index, message.type, message.value, message.involved_accounts_addresses
+SELECT message.transaction_hash, message.index, message.type, message.value, message.involved_accounts_addresses, message.partition_id
 FROM message
          JOIN transaction t on message.transaction_hash = t.hash
 WHERE (cardinality(types) = 0 OR type = ANY (types))
