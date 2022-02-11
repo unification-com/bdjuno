@@ -78,7 +78,7 @@ func allowanceCmd(parseConfig *parse.Config) *cobra.Command {
 						continue
 					}
 
-					err = feegrantModule.HandleMsg(index, msg, transaction)
+					err = feegrantModule.HandleMsg(index, msg, transaction, 0)
 					if err != nil {
 						return fmt.Errorf("error while handling feegrant module message: %s", err)
 					}
