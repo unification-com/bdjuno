@@ -6,7 +6,7 @@ require (
 	github.com/Sifchain/sifnode v0.0.0-20211110000810-22b3ac797839
 	github.com/cosmos/cosmos-sdk v0.42.10
 	github.com/forbole/juno/v2 v2.0.0-20220125161451-4f6319e432a5
-	github.com/go-co-op/gocron v1.11.0
+	github.com/go-co-op/gocron v1.12.0
 	github.com/gogo/protobuf v1.3.3
 	github.com/jmoiron/sqlx v1.3.4
 	github.com/lib/pq v1.10.4
@@ -25,3 +25,5 @@ replace github.com/gogo/protobuf => github.com/regen-network/protobuf v1.3.3-alp
 replace google.golang.org/grpc => google.golang.org/grpc v1.33.2
 
 replace github.com/tendermint/tendermint => github.com/forbole/tendermint v0.34.13-0.20210820072129-a2a4af55563d
+
+replace github.com/forbole/juno/v2 => github.com/forbole/juno/v2 v2.0.0-20220214053433-3f8f482060e9
