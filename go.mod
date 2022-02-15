@@ -5,7 +5,7 @@ go 1.16
 require (
 	github.com/Sifchain/sifnode v0.0.0-20211110000810-22b3ac797839
 	github.com/cosmos/cosmos-sdk v0.42.10
-	github.com/forbole/juno/v2 v2.0.0-20220125161451-4f6319e432a5
+	github.com/forbole/juno/v2 v2.0.0-20220215161135-4846576418db
 	github.com/go-co-op/gocron v1.12.0
 	github.com/gogo/protobuf v1.3.3
 	github.com/jmoiron/sqlx v1.3.4
