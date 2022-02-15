@@ -35,7 +35,7 @@ func main() {
 		cmd.VersionCmd(),
 		initcmd.InitCmd(cfg.GetInitConfig()),
 		parsecmd.ParseCmd(cfg.GetParseConfig()),
-		migratecmd.NewMigrateCmd(),
+		migratecmd.NewMigrateCmd(cfg.GetParseConfig()),
 		fixcmd.NewFixCmd(cfg.GetParseConfig()),
 		parsegenesiscmd.NewParseGenesisCmd(cfg.GetParseConfig()),
 		actionscmd.NewActionsCmd(cfg.GetParseConfig()),
