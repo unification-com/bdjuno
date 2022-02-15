@@ -101,7 +101,7 @@ $$
 SELECT message.transaction_hash, message.index, message.type, message.value, message.involved_accounts_addresses, message.partition_id
 FROM message
 WHERE (cardinality(types) = 0 OR type = ANY (types))
-  AND involved_accounts_addresses >@ addresses 
+  AND involved_accounts_addresses && addresses 
 ORDER BY partition_id DESC, involved_accounts_addresses
 LIMIT "limit" OFFSET "offset"
 $$ LANGUAGE sql STABLE;
