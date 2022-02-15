@@ -81,7 +81,7 @@ CREATE TABLE message
     involved_accounts_addresses TEXT[] NOT NULL,
     
     /* Psql partition */
-    partition_id BIGINT NOT NULL REFERENCES transaction (partition_id)
+    partition_id BIGINT REFERENCES transaction (partition_id)
 )PARTITION BY LIST(partition_id);
 CREATE INDEX message_transaction_hash_index ON message (transaction_hash);
 CREATE INDEX message_type_index ON message (type);
