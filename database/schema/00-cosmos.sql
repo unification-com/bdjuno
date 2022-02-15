@@ -100,12 +100,12 @@ CREATE FUNCTION messages_by_address(
 $$
 SELECT message.transaction_hash, message.index, message.type, message.value, message.involved_accounts_addresses, message.partition_id
 FROM message
-         JOIN transaction t on message.transaction_hash = t.hash
 WHERE (cardinality(types) = 0 OR type = ANY (types))
-  AND addresses && involved_accounts_addresses
-ORDER BY height DESC
+  AND involved_accounts_addresses >@ addresses 
+ORDER BY partition_id DESC, involved_accounts_addresses
 LIMIT "limit" OFFSET "offset"
 $$ LANGUAGE sql STABLE;
+
 
 CREATE TABLE pruning
 (
