@@ -71,20 +71,24 @@ func (s Source) GetValidatorsWithStatus(height int64, status string) ([]stakingt
 	return validators, nil
 }
 
-// GetDelegation implements stakingsource.Source
-func (s Source) GetDelegation(height int64, delegator string, valOperAddr string) (stakingtypes.DelegationResponse, error) {
-	res, err := s.stakingClient.Delegation(
-		remote.GetHeightRequestContext(s.Ctx, height),
-		&stakingtypes.QueryDelegationRequest{
-			ValidatorAddr: valOperAddr,
-			DelegatorAddr: delegator,
-		},
-	)
+// GetPool implements stakingsource.Source
+func (s Source) GetPool(height int64) (stakingtypes.Pool, error) {
+	res, err := s.stakingClient.Pool(remote.GetHeightRequestContext(s.Ctx, height), &stakingtypes.QueryPoolRequest{})
 	if err != nil {
-		return stakingtypes.DelegationResponse{}, err
+		return stakingtypes.Pool{}, err
 	}
 
-	return *res.DelegationResponse, nil
+	return res.Pool, nil
+}
+
+// GetParams implements stakingsource.Source
+func (s Source) GetParams(height int64) (stakingtypes.Params, error) {
+	res, err := s.stakingClient.Params(remote.GetHeightRequestContext(s.Ctx, height), &stakingtypes.QueryParamsRequest{})
+	if err != nil {
+		return stakingtypes.Params{}, err
+	}
+
+	return res.Params, nil
 }
 
 // GetValidatorDelegations implements stakingsource.Source
@@ -147,22 +151,18 @@ func (s Source) GetDelegatorDelegations(height int64, delegator string) ([]staki
 	return delegations, nil
 }
 
-// GetPool implements stakingsource.Source
-func (s Source) GetPool(height int64) (stakingtypes.Pool, error) {
-	res, err := s.stakingClient.Pool(remote.GetHeightRequestContext(s.Ctx, height), &stakingtypes.QueryPoolRequest{})
+// GetDelegation implements stakingsource.Source
+func (s Source) GetDelegation(height int64, delegator string, valOperAddr string) (stakingtypes.DelegationResponse, error) {
+	res, err := s.stakingClient.Delegation(
+		remote.GetHeightRequestContext(s.Ctx, height),
+		&stakingtypes.QueryDelegationRequest{
+			ValidatorAddr: valOperAddr,
+			DelegatorAddr: delegator,
+		},
+	)
 	if err != nil {
-		return stakingtypes.Pool{}, err
+		return stakingtypes.DelegationResponse{}, err
 	}
 
-	return res.Pool, nil
-}
-
-// GetParams implements stakingsource.Source
-func (s Source) GetParams(height int64) (stakingtypes.Params, error) {
-	res, err := s.stakingClient.Params(remote.GetHeightRequestContext(s.Ctx, height), &stakingtypes.QueryParamsRequest{})
-	if err != nil {
-		return stakingtypes.Params{}, err
-	}
-
-	return res.Params, nil
+	return *res.DelegationResponse, nil
 }
