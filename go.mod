@@ -3,8 +3,8 @@ module github.com/forbole/bdjuno/v2
 go 1.16
 
 require (
-	github.com/cosmos/cosmos-sdk v0.42.9
-	github.com/forbole/juno/v2 v2.0.0-20220125161451-4f6319e432a5
+	github.com/cosmos/cosmos-sdk v0.44.0
+	github.com/forbole/juno/v2 v2.0.0-20220126170316-a7d4812d6af2
 	github.com/go-co-op/gocron v1.12.0
 	github.com/gogo/protobuf v1.3.3
 	github.com/jmoiron/sqlx v1.2.1-0.20200324155115-ee514944af4b
