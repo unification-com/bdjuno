@@ -39,6 +39,8 @@ func TotalDelegationAmount(w http.ResponseWriter, r *http.Request) {
 }
 
 func getTotalDelegationAmount(input actionstypes.PayloadArgs) (actionstypes.Balance, error) {
+	var coinObject sdk.Coins
+
 	parseCtx, sources, err := getCtxAndSources()
 	if err != nil {
 		return actionstypes.Balance{}, err
@@ -52,10 +54,8 @@ func getTotalDelegationAmount(input actionstypes.PayloadArgs) (actionstypes.Bala
 	// Get all  delegations for given delegator address
 	delegationList, err := sources.StakingSource.GetDelegationsWithPagination(height, input.Address, nil)
 	if err != nil {
-		return actionstypes.Balance{}, fmt.Errorf("error while getting delegator delegations: %s", err)
+		return actionstypes.Balance{}, nil
 	}
-
-	var coinObject sdk.Coins
 
 	// Add up total value of delegations
 	for _, eachDelegation := range delegationList.DelegationResponses {

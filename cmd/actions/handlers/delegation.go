@@ -58,7 +58,7 @@ func getDelegation(input actionstypes.PayloadArgs) (actionstypes.DelegationRespo
 	// Get delegator's total rewards
 	res, err := sources.StakingSource.GetDelegationsWithPagination(height, input.Address, pagination)
 	if err != nil {
-		return actionstypes.DelegationResponse{}, fmt.Errorf("error while getting delegator delegations: %s", err)
+		return actionstypes.DelegationResponse{}, nil
 	}
 
 	delegations := make([]actionstypes.Delegation, len(res.DelegationResponses))
