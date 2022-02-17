@@ -7,11 +7,11 @@ import (
 	dbtypes "github.com/forbole/bdjuno/v2/database/types"
 	dbutils "github.com/forbole/bdjuno/v2/database/utils"
 
-	"github.com/forbole/bdjuno/v2/types"
+	providertypes "github.com/ovrclk/akash/x/provider/types"
 )
 
-// SaveAccountBalances allows to store the given balances inside the database
-func (db *Db) SaveProviders(providers []types.Provider) error {
+// SaveProviders allows to store the given balances inside the database
+func (db *Db) SaveProviders(providers []providertypes.Provider, height int64) error {
 	if len(providers) == 0 {
 		return nil
 	}
@@ -25,7 +25,7 @@ func (db *Db) SaveProviders(providers []types.Provider) error {
 		}
 
 		// Store providers
-		err := db.saveProviders(paramsNumber, providers)
+		err := db.saveProviders(paramsNumber, providers, height)
 		if err != nil {
 			return fmt.Errorf("error while storing providers: %s", err)
 		}
@@ -34,7 +34,7 @@ func (db *Db) SaveProviders(providers []types.Provider) error {
 	return nil
 }
 
-func (db *Db) saveProviders(paramsNumber int, providers []types.Provider) error {
+func (db *Db) saveProviders(paramsNumber int, providers []providertypes.Provider, height int64) error {
 	stmt := `INSERT INTO provider (owner_address, host_uri, attributes, info, height) VALUES `
 	var params []interface{}
 
@@ -54,7 +54,7 @@ func (db *Db) saveProviders(paramsNumber int, providers []types.Provider) error 
 			return fmt.Errorf("error while converting provider info to DbProviderInfo: %s", err)
 		}
 
-		params = append(params, provider.OwnerAddress, provider.HostURI, string(attributesBz), infoValue, provider.Height)
+		params = append(params, provider.Owner, provider.HostURI, string(attributesBz), infoValue, height)
 	}
 
 	stmt = stmt[:len(stmt)-1]
@@ -71,5 +71,15 @@ WHERE provider.height <= excluded.height`
 		return fmt.Errorf("error while storing providers: %s", err)
 	}
 
+	return nil
+}
+
+// SaveProviders allows to store the given balances inside the database
+func (db *Db) DeleteProvider(ownerAddress string) error {
+	stmt := `DELETE FROM providers WHERE owner = $1`
+	_, err := db.Sql.Exec(stmt, ownerAddress)
+	if err != nil {
+		return fmt.Errorf("error while deleting provider: %s", err)
+	}
 	return nil
 }

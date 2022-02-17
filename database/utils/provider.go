@@ -1,10 +1,12 @@
 package utils
 
-import "github.com/forbole/bdjuno/v2/types"
+import (
+	providertypes "github.com/ovrclk/akash/x/provider/types"
+)
 
-func SplitProviders(providers []types.Provider, paramsNumber int) [][]types.Provider {
+func SplitProviders(providers []providertypes.Provider, paramsNumber int) [][]providertypes.Provider {
 	maxBalancesPerSlice := maxPostgreSQLParams / paramsNumber
-	slices := make([][]types.Provider, len(providers)/maxBalancesPerSlice+1)
+	slices := make([][]providertypes.Provider, len(providers)/maxBalancesPerSlice+1)
 
 	sliceIndex := 0
 	for index, provider := range providers {

@@ -10,10 +10,7 @@ import (
 var (
 	_ modules.Module        = &Module{}
 	_ modules.GenesisModule = &Module{}
-	// TO-DO:
-	// _ modules.PeriodicOperationsModule = &Module{}
-	// _ modules.BlockModule              = &Module{}
-	// _ modules.MessageModule            = &Module{}
+	_ modules.MessageModule = &Module{}
 )
 
 // Module represents the x/provider module
