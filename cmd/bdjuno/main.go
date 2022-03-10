@@ -17,6 +17,8 @@ import (
 
 	"github.com/forbole/bdjuno/v2/database"
 	"github.com/forbole/bdjuno/v2/modules"
+
+	und "github.com/unification-com/mainchain/app"
 )
 
 func main() {
@@ -54,6 +56,7 @@ func main() {
 func getBasicManagers() []module.BasicManager {
 	return []module.BasicManager{
 		simapp.ModuleBasics,
+		und.ModuleBasics,
 	}
 }
 
@@ -62,6 +65,7 @@ func getBasicManagers() []module.BasicManager {
 // This should be edited by custom implementations if needed.
 func getAddressesParser() messages.MessageAddressesParser {
 	return messages.JoinMessageParsers(
+		fundMessageAddressesParser,
 		messages.CosmosMessageAddressesParser,
 	)
 }
