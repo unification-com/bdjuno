@@ -27,6 +27,8 @@ import (
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
 	"github.com/forbole/juno/v2/node/local"
 
+	enttypes "github.com/unification-com/mainchain/x/enterprise/types"
+
 	jmodules "github.com/forbole/juno/v2/modules"
 	"github.com/forbole/juno/v2/modules/messages"
 	"github.com/forbole/juno/v2/modules/registrar"
@@ -207,7 +209,7 @@ func buildRemoteSources(cfg *remote.Details) (*Sources, error) {
 	}
 
 	return &Sources{
-		BankSource:     remotebanksource.NewSource(source, banktypes.NewQueryClient(source.GrpcConn)),
+		BankSource:     remotebanksource.NewSource(source, banktypes.NewQueryClient(source.GrpcConn), enttypes.NewQueryClient(source.GrpcConn)),
 		DistrSource:    remotedistrsource.NewSource(source, distrtypes.NewQueryClient(source.GrpcConn)),
 		GovSource:      remotegovsource.NewSource(source, govtypes.NewQueryClient(source.GrpcConn)),
 		MintSource:     remotemintsource.NewSource(source, minttypes.NewQueryClient(source.GrpcConn)),

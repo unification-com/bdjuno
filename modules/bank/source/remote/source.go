@@ -9,6 +9,8 @@ import (
 
 	bankkeeper "github.com/forbole/bdjuno/v2/modules/bank/source"
 	"github.com/forbole/bdjuno/v2/types"
+
+	enttypes "github.com/unification-com/mainchain/x/enterprise/types"
 )
 
 var (
@@ -18,13 +20,15 @@ var (
 type Source struct {
 	*remote.Source
 	bankClient banktypes.QueryClient
+	entClient  enttypes.QueryClient
 }
 
 // NewSource builds a new Source instance
-func NewSource(source *remote.Source, bankClient banktypes.QueryClient) *Source {
+func NewSource(source *remote.Source, bankClient banktypes.QueryClient, entClient enttypes.QueryClient) *Source {
 	return &Source{
 		Source:     source,
 		bankClient: bankClient,
+		entClient:  entClient,
 	}
 }
 
@@ -51,7 +55,7 @@ func (s Source) GetBalances(addresses []string, height int64) ([]types.AccountBa
 
 // GetSupply implements bankkeeper.Source
 func (s Source) GetSupply(height int64) (sdk.Coins, error) {
-	res, err := s.bankClient.TotalSupply(remote.GetHeightRequestContext(s.Ctx, height), &banktypes.QueryTotalSupplyRequest{})
+	res, err := s.entClient.TotalSupply(remote.GetHeightRequestContext(s.Ctx, height), &enttypes.QueryTotalSupplyRequest{})
 	if err != nil {
 		return nil, fmt.Errorf("error while getting total supply: %s", err)
 	}
