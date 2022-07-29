@@ -2,6 +2,7 @@ package types
 
 import (
 	"fmt"
+	enttypes "github.com/unification-com/mainchain/x/enterprise/types"
 	"os"
 
 	"github.com/cosmos/cosmos-sdk/simapp"
@@ -113,7 +114,7 @@ func buildRemoteSources(cfg *remote.Details) (*Sources, error) {
 	}
 
 	return &Sources{
-		BankSource:     remotebanksource.NewSource(source, banktypes.NewQueryClient(source.GrpcConn)),
+		BankSource:     remotebanksource.NewSource(source, banktypes.NewQueryClient(source.GrpcConn), enttypes.NewQueryClient(source.GrpcConn)),
 		DistrSource:    remotedistrsource.NewSource(source, distrtypes.NewQueryClient(source.GrpcConn)),
 		GovSource:      remotegovsource.NewSource(source, govtypes.NewQueryClient(source.GrpcConn)),
 		MintSource:     remotemintsource.NewSource(source, minttypes.NewQueryClient(source.GrpcConn)),

@@ -2,6 +2,7 @@ package remote
 
 import (
 	"fmt"
+	enttypes "github.com/unification-com/mainchain/x/enterprise/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/query"
@@ -19,13 +20,15 @@ var (
 type Source struct {
 	*remote.Source
 	bankClient banktypes.QueryClient
+	entClient  enttypes.QueryClient
 }
 
 // NewSource builds a new Source instance
-func NewSource(source *remote.Source, bankClient banktypes.QueryClient) *Source {
+func NewSource(source *remote.Source, bankClient banktypes.QueryClient, entClient enttypes.QueryClient) *Source {
 	return &Source{
 		Source:     source,
 		bankClient: bankClient,
+		entClient:  entClient,
 	}
 }
 
@@ -58,9 +61,9 @@ func (s Source) GetSupply(height int64) (sdk.Coins, error) {
 	var nextKey []byte
 	var stop = false
 	for !stop {
-		res, err := s.bankClient.TotalSupply(
+		res, err := s.entClient.TotalSupply(
 			ctx,
-			&banktypes.QueryTotalSupplyRequest{
+			&enttypes.QueryTotalSupplyRequest{
 				Pagination: &query.PageRequest{
 					Key:   nextKey,
 					Limit: 100, // Query 100 supplies at time

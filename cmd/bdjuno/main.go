@@ -7,6 +7,7 @@ import (
 	parsetypes "github.com/forbole/juno/v3/cmd/parse/types"
 	startcmd "github.com/forbole/juno/v3/cmd/start"
 	"github.com/forbole/juno/v3/modules/messages"
+	und "github.com/unification-com/mainchain/app"
 
 	migratecmd "github.com/forbole/bdjuno/v3/cmd/migrate"
 	parsecmd "github.com/forbole/bdjuno/v3/cmd/parse"
@@ -15,8 +16,6 @@ import (
 
 	"github.com/forbole/bdjuno/v3/database"
 	"github.com/forbole/bdjuno/v3/modules"
-
-	gaiaapp "github.com/cosmos/gaia/v7/app"
 )
 
 func main() {
@@ -55,7 +54,7 @@ func main() {
 // This should be edited by custom implementations if needed.
 func getBasicManagers() []module.BasicManager {
 	return []module.BasicManager{
-		gaiaapp.ModuleBasics,
+		und.ModuleBasics,
 	}
 }
 
@@ -64,6 +63,7 @@ func getBasicManagers() []module.BasicManager {
 // This should be edited by custom implementations if needed.
 func getAddressesParser() messages.MessageAddressesParser {
 	return messages.JoinMessageParsers(
+		fundMessageAddressesParser,
 		messages.CosmosMessageAddressesParser,
 	)
 }
