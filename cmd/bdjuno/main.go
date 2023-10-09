@@ -7,13 +7,13 @@ import (
 	parsetypes "github.com/forbole/juno/v4/cmd/parse/types"
 	startcmd "github.com/forbole/juno/v4/cmd/start"
 	"github.com/forbole/juno/v4/modules/messages"
+	und "github.com/unification-com/mainchain/app"
 
 	migratecmd "github.com/forbole/bdjuno/v4/cmd/migrate"
 	parsecmd "github.com/forbole/bdjuno/v4/cmd/parse"
 
 	"github.com/forbole/bdjuno/v4/types/config"
 
-	"github.com/cosmos/cosmos-sdk/simapp"
 	"github.com/forbole/bdjuno/v4/database"
 	"github.com/forbole/bdjuno/v4/modules"
 )
@@ -54,7 +54,7 @@ func main() {
 // This should be edited by custom implementations if needed.
 func getBasicManagers() []module.BasicManager {
 	return []module.BasicManager{
-		simapp.ModuleBasics,
+		und.ModuleBasics,
 	}
 }
 
@@ -63,6 +63,7 @@ func getBasicManagers() []module.BasicManager {
 // This should be edited by custom implementations if needed.
 func getAddressesParser() messages.MessageAddressesParser {
 	return messages.JoinMessageParsers(
+		fundMessageAddressesParser,
 		messages.CosmosMessageAddressesParser,
 	)
 }
